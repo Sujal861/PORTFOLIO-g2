@@ -46,10 +46,15 @@ import {
   Database,
   Wifi,
   Layers,
+  ZoomIn,
+  ChevronLeft,
+  ChevronRight,
+  Shield,
 } from "lucide-react"
 import { Toaster } from "@/components/ui/toaster"
 import { useToast } from "@/hooks/use-toast"
 import { ThemeToggle } from "@/components/theme-toggle"
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 
 export default function RoboticPortfolio() {
   const [isLoading, setIsLoading] = useState(true)
@@ -110,12 +115,6 @@ export default function RoboticPortfolio() {
     setDownloadProgress(0)
 
     try {
-      // Create a direct download link for the PDF
-      const link = document.createElement("a")
-      link.href = "/resume/Sujal_Gupta_Resume.pdf"
-      link.download = "Sujal_Gupta_Resume.pdf"
-      link.target = "_blank"
-
       // Simulate download progress for better UX
       const progressInterval = setInterval(() => {
         setDownloadProgress((prev) => {
@@ -127,16 +126,35 @@ export default function RoboticPortfolio() {
         })
       }, 100)
 
+      // Fetch the PDF file
+      const response = await fetch("/resume/Sujal_Gupta_Resume.pdf")
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch PDF")
+      }
+
+      const blob = await response.blob()
+
+      // Create download link
+      const url = window.URL.createObjectURL(blob)
+      const link = document.createElement("a")
+      link.href = url
+      link.download = "Sujal_Gupta_Resume.pdf"
+      link.style.display = "none"
+
       // Trigger download
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
 
+      // Clean up the URL object
+      window.URL.revokeObjectURL(url)
+
       // Complete the progress
       setTimeout(() => {
         setDownloadProgress(100)
         toast({
-          title: "Download Complete",
+          title: "Download Complete! 🎯",
           description: "Your resume has been downloaded successfully!",
         })
 
@@ -144,12 +162,12 @@ export default function RoboticPortfolio() {
           setIsDownloading(false)
           setDownloadProgress(0)
         }, 1000)
-      }, 1000)
+      }, 500)
     } catch (error) {
       console.error("Download failed:", error)
       toast({
-        title: "Download Failed",
-        description: "An error occurred while downloading the resume.",
+        title: "Download Failed ❌",
+        description: "An error occurred while downloading the resume. Please try again.",
         variant: "destructive",
       })
       setIsDownloading(false)
@@ -243,6 +261,7 @@ export default function RoboticPortfolio() {
       color: "from-purple-400 to-pink-600",
       category: "AI/ML",
       mangaEffect: "AI AWAKENING!",
+      githubLink: "https://github.com/Sujal861/Omi-Mentor.git",
     },
     {
       title: "Hiring AI Platform",
@@ -257,13 +276,48 @@ export default function RoboticPortfolio() {
     {
       title: "AMR-Simulation",
       description:
-        "Advanced Autonomous Mobile Robot simulation project featuring path planning, obstacle avoidance, and navigation algorithms. Implemented comprehensive robotics simulation environment for testing AMR capabilities.",
-      tech: ["ROS", "Python", "Simulation", "Path Planning", "Robotics"],
+        "Advanced Autonomous Mobile Robot simulation project featuring path planning, obstacle avoidance, and navigation algorithms. Implemented comprehensive robotics simulation environment for testing AMR capabilities using Bullet Physics engine.",
+      tech: ["ROS", "Python", "Simulation", "Path Planning", "Robotics", "Bullet Physics"],
       icon: <Robot className="w-6 h-6" />,
       color: "from-indigo-400 to-purple-600",
       category: "Robotics",
       mangaEffect: "AMR POWER!",
       githubLink: "https://github.com/Sujal861/AMR-Simulation.git",
+      images: [
+        {
+          src: "/images/projects/amr-simulation-1.png",
+          alt: "AMR Robot navigating in 3D simulation environment with obstacle avoidance",
+          caption: "Autonomous navigation with obstacle detection",
+        },
+        {
+          src: "/images/projects/amr-simulation-2.png",
+          alt: "AMR Robot demonstrating path planning capabilities",
+          caption: "Advanced path planning algorithms in action",
+        },
+        {
+          src: "/images/projects/amr-simulation-3.png",
+          alt: "Bullet Physics ExampleBrowser interface showing robotics control simulation",
+          caption: "Full simulation environment with physics engine",
+        },
+      ],
+    },
+    {
+      title: "Web Watch Phish",
+      description:
+        "Advanced phishing detection and web security monitoring system built during ChipChamps AMUHACKS4.0. Features real-time URL analysis, machine learning-based threat detection, and comprehensive security reporting for enhanced web browsing safety.",
+      tech: ["Python", "Machine Learning", "Web Security", "Flask", "JavaScript", "Cybersecurity"],
+      icon: <Shield className="w-6 h-6" />,
+      color: "from-red-400 to-orange-600",
+      category: "Cybersecurity",
+      mangaEffect: "SECURITY SHIELD!",
+      githubLink: "https://github.com/Sujal861/ChipChamps_AMUHACKS4.0.git",
+      images: [
+        {
+          src: "/images/projects/web-watch-phish-1.png",
+          alt: "Web Watch Phish cybersecurity interface showing URL safety checker and threat detection features",
+          caption: "Advanced AI-powered phishing detection with real-time monitoring",
+        },
+      ],
     },
   ]
 
@@ -285,35 +339,100 @@ export default function RoboticPortfolio() {
 
   const certifications = [
     {
-      name: "MoE's Innovation Ambassador (IA) Training",
+      name: "Robotics Virtual Internship Certificate",
+      organization: "Kodacy & SPACE",
+      date: "Feb 2025",
+      level: "Professional",
+      category: "Robotics",
+      icon: <Robot className="w-6 h-6" />,
+      description:
+        "Successfully completed a 15-day virtual internship program on 'ROBOTICS' conducted by KODACY in association with Scientific Platforms And Cosmic Explorations (SPACE). Gained hands-on experience in robotics fundamentals and practical applications.",
+      color: "from-blue-400 to-cyan-600",
+      image: "/images/certificates/kodacy-robotics-internship.png",
+    },
+    {
+      name: "Build Real World AI Applications with Gemini and Imagen",
+      organization: "Google Cloud",
+      date: "2024",
+      level: "Introductory",
+      category: "AI Development",
+      icon: <Zap className="w-6 h-6" />,
+      description:
+        "Google Cloud skill badge for building real-world AI applications using Gemini and Imagen technologies. Covers introductory concepts in Machine Learning & AI application development.",
+      color: "from-orange-400 to-red-600",
+      image: "/images/certificates/google-gemini-imagen-real-world.png",
+    },
+    {
+      name: "Develop GenAI Apps with Gemini and Streamlit",
+      organization: "Google Cloud",
+      date: "2024",
+      level: "Intermediate",
+      category: "App Development",
+      icon: <Monitor className="w-6 h-6" />,
+      description:
+        "Intermediate-level Google Cloud skill badge for developing generative AI applications using Gemini API and Streamlit framework. Focuses on practical implementation of GenAI solutions.",
+      color: "from-indigo-400 to-purple-600",
+      image: "/images/certificates/google-gemini-streamlit-apps.png",
+    },
+    {
+      name: "MoE's Innovation Ambassador (IA) Training - Foundation Level",
       organization: "Ministry of Education, India",
       date: "2024",
-      level: "Foundation, Reskilling, Advanced Levels",
+      level: "Foundation",
       category: "Innovation & Leadership",
       icon: <Trophy className="w-6 h-6" />,
       description:
-        "Comprehensive training program focusing on innovation methodologies and leadership in educational technology.",
+        "Foundation level training program focusing on innovation methodologies and leadership in educational technology as part of MoE's Innovation Cell & AICTE initiative.",
       color: "from-yellow-400 to-orange-600",
+      image: "/images/certificates/moe-innovation-ambassador-foundation.png",
+    },
+    {
+      name: "MoE's Innovation Ambassador (IA) Training - Advanced Level",
+      organization: "Ministry of Education, India",
+      date: "2024",
+      level: "Advanced",
+      category: "Innovation & Leadership",
+      icon: <Trophy className="w-6 h-6" />,
+      description:
+        "Advanced level Innovation Ambassador training conducted by MoE's Innovation Cell & AICTE during the IIC calendar year 2024-25, focusing on advanced innovation strategies and leadership development.",
+      color: "from-yellow-400 to-orange-600",
+      image: "/images/certificates/moe-innovation-ambassador-advanced.png",
+    },
+    {
+      name: "MoE's Innovation Ambassador (IA) Training - Advanced Level 2",
+      organization: "Ministry of Education, India",
+      date: "2024",
+      level: "Advanced",
+      category: "Innovation & Leadership",
+      icon: <Trophy className="w-6 h-6" />,
+      description:
+        "Second advanced level Innovation Ambassador certification demonstrating continued excellence in innovation leadership and educational technology advancement through MoE's comprehensive training program.",
+      color: "from-yellow-400 to-orange-600",
+      image: "/images/certificates/moe-innovation-ambassador-advanced-2.png",
     },
     {
       name: "Generative AI Model Development",
-      organization: "Industry Certification",
+      organization: "NxtWave",
       date: "2024",
       level: "Professional",
       category: "Artificial Intelligence",
       icon: <Brain className="w-6 h-6" />,
-      description: "Advanced certification in developing and implementing generative AI models and applications.",
+      description:
+        "Advanced certification in developing and implementing generative AI models and applications through hands-on workshop 'AI for Students: Build Your Own Generative AI Model'.",
       color: "from-purple-400 to-pink-600",
+      image: "/images/certificates/nxtwave-generative-ai.png",
     },
     {
       name: "Mechanics and Control of Robotic Manipulator",
-      organization: "Robotics Institute",
-      date: "2024",
+      organization: "NPTEL - IIT Palakkad",
+      date: "Jul-Sep 2024",
       level: "Advanced",
       category: "Robotics",
       icon: <Robot className="w-6 h-6" />,
-      description: "Specialized training in robotic manipulator mechanics, kinematics, and control systems.",
+      description:
+        "NPTEL certification in robotic manipulator mechanics, kinematics, and control systems with consolidated score of 47%. 8-week comprehensive course covering advanced robotics concepts.",
       color: "from-blue-400 to-cyan-600",
+      image: "/images/certificates/nptel-robotics-manipulators.png",
     },
     {
       name: "Prompt Design in Vertex AI",
@@ -322,59 +441,58 @@ export default function RoboticPortfolio() {
       level: "Professional",
       category: "AI/ML",
       icon: <Code className="w-6 h-6" />,
-      description: "Google Cloud certification focusing on effective prompt engineering and AI model optimization.",
-      color: "from-green-400 to-teal-600",
-    },
-    {
-      name: "Build Real World AI Applications with Gemini and Imagen",
-      organization: "Google",
-      date: "2024",
-      level: "Professional",
-      category: "AI Development",
-      icon: <Zap className="w-6 h-6" />,
       description:
-        "Hands-on certification for building production-ready AI applications using Google's Gemini and Imagen.",
-      color: "from-orange-400 to-red-600",
-    },
-    {
-      name: "Develop GenAI Apps with Gemini and Streamlit",
-      organization: "Google",
-      date: "2024",
-      level: "Professional",
-      category: "App Development",
-      icon: <Monitor className="w-6 h-6" />,
-      description: "Certification in developing generative AI applications using Gemini API and Streamlit framework.",
-      color: "from-indigo-400 to-purple-600",
+        "Google Cloud certification focusing on effective prompt engineering and AI model optimization using Vertex AI platform.",
+      color: "from-green-400 to-teal-600",
+      image: "/images/certificates/google-vertex-ai-prompt.png",
     },
     {
       name: "Comparative Analysis of Converter Techniques for Ripple Reduction",
       organization: "Zigma Medicare India",
-      date: "2024",
+      date: "Sep 2024",
       level: "Research",
       category: "Electrical Engineering",
       icon: <Cpu className="w-6 h-6" />,
-      description: "Research-based certification focusing on power electronics and converter optimization techniques.",
+      description:
+        "Research-based certification focusing on power electronics and converter optimization techniques presented at International Conference on Engineering and Technology.",
       color: "from-cyan-400 to-blue-600",
+      image: "/images/certificates/zigma-medicare-converter-techniques.png",
+    },
+    {
+      name: "ROBORIKISHI Competition Participation",
+      organization: "National Institute of Engineering",
+      date: "Dec 2023",
+      level: "Competition",
+      category: "Robotics",
+      icon: <Trophy className="w-6 h-6" />,
+      description:
+        "Certificate of participation in ROBORIKISHI, a national level robotics competition organized by Robotics Club @ NIE, demonstrating practical robotics skills and innovation.",
+      color: "from-red-400 to-orange-600",
+      image: "/images/certificates/roborikishi-participation.png",
     },
     {
       name: "Advanced Robotics Applications",
-      organization: "Technical Institute",
-      date: "2024",
+      organization: "NPTEL - IIT Kanpur",
+      date: "Feb-Apr 2025",
       level: "Advanced",
       category: "Robotics",
       icon: <Wrench className="w-6 h-6" />,
-      description: "Advanced certification covering cutting-edge robotics applications and implementation strategies.",
+      description:
+        "NPTEL Elite certification in advanced robotics applications with consolidated score of 66%. Comprehensive 8-week course covering cutting-edge robotics applications and implementation strategies.",
       color: "from-pink-400 to-purple-600",
+      image: "/images/certificates/advanced-robotics-nptel.png",
     },
     {
-      name: "TCS iON Career Edge",
+      name: "TCS iON Career Edge - Young Professional",
       organization: "Tata Consultancy Services",
-      date: "2024",
+      date: "May 2025",
       level: "Professional",
       category: "Career Development",
       icon: <GraduationCap className="w-6 h-6" />,
-      description: "Professional development certification focusing on industry-ready skills and career advancement.",
+      description:
+        "Comprehensive professional development certification covering Communication Skills, Presentation Skills, Career Guidance, Resume Writing, Interview Skills, Business Etiquette, and IT Foundational Skills.",
       color: "from-teal-400 to-green-600",
+      image: "/images/certificates/tcs-career-edge-certificate.png",
     },
   ]
 
@@ -386,12 +504,230 @@ export default function RoboticPortfolio() {
     "Innovation & Leadership",
     "Electrical Engineering",
     "Career Development",
+    "AI Development",
+    "App Development",
   ]
 
   const [selectedCategory, setSelectedCategory] = useState("All")
 
   const filteredCertifications =
     selectedCategory === "All" ? certifications : certifications.filter((cert) => cert.category === selectedCategory)
+
+  // Project Image Gallery Component
+  const ProjectImageGallery = ({ project }: { project: any }) => {
+    const [currentImageIndex, setCurrentImageIndex] = useState(0)
+
+    if (!project.images || project.images.length === 0) return null
+
+    const nextImage = () => {
+      setCurrentImageIndex((prev) => (prev + 1) % project.images.length)
+    }
+
+    const prevImage = () => {
+      setCurrentImageIndex((prev) => (prev - 1 + project.images.length) % project.images.length)
+    }
+
+    return (
+      <div className="mb-6">
+        <div className="relative w-full h-48 rounded-lg overflow-hidden border-4 border-black bg-gray-100">
+          <Image
+            src={project.images[currentImageIndex].src || "/placeholder.svg"}
+            alt={project.images[currentImageIndex].alt}
+            fill
+            className="object-cover transition-all duration-300"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          />
+
+          {/* Navigation arrows */}
+          {project.images.length > 1 && (
+            <>
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={prevImage}
+                className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white border-2 border-black rounded-full p-2 transition-colors"
+                aria-label="Previous image"
+              >
+                <ChevronLeft className="w-4 h-4 text-black" />
+              </motion.button>
+
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={nextImage}
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white border-2 border-black rounded-full p-2 transition-colors"
+                aria-label="Next image"
+              >
+                <ChevronRight className="w-4 h-4 text-black" />
+              </motion.button>
+            </>
+          )}
+
+          {/* Image indicators */}
+          {project.images.length > 1 && (
+            <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2">
+              {project.images.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentImageIndex(index)}
+                  className={`w-2 h-2 rounded-full border border-black transition-colors ${
+                    index === currentImageIndex ? "bg-white" : "bg-white/50"
+                  }`}
+                  aria-label={`Go to image ${index + 1}`}
+                />
+              ))}
+            </div>
+          )}
+
+          {/* Zoom button */}
+          <Dialog>
+            <DialogTrigger asChild>
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className="absolute top-2 right-2 p-2 bg-blue-500 text-white rounded-full border-2 border-black hover:bg-blue-600 transition-colors"
+                aria-label="View full size image"
+              >
+                <ZoomIn className="w-4 h-4" />
+              </motion.button>
+            </DialogTrigger>
+            <DialogContent className="max-w-4xl w-full p-0 bg-white border-8 border-black">
+              <div className="relative">
+                <div className="p-6 border-b-4 border-black bg-yellow-300">
+                  <h3 className="text-2xl font-bold manga-title text-black">{project.title}</h3>
+                  <p className="text-black font-bold">{project.images[currentImageIndex].caption}</p>
+                </div>
+                <div className="p-6">
+                  <div className="relative w-full h-96 mb-4">
+                    <Image
+                      src={project.images[currentImageIndex].src || "/placeholder.svg"}
+                      alt={project.images[currentImageIndex].alt}
+                      fill
+                      className="object-contain rounded-lg"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
+                    />
+                  </div>
+                  <p className="text-black font-bold leading-relaxed">{project.images[currentImageIndex].caption}</p>
+                </div>
+              </div>
+            </DialogContent>
+          </Dialog>
+        </div>
+
+        {/* Image caption */}
+        <p className="text-sm text-black font-bold mt-2 text-center manga-text">
+          {project.images[currentImageIndex].caption}
+        </p>
+      </div>
+    )
+  }
+
+  // Enhanced Certificate Modal Component
+  const CertificateModal = ({ cert }: { cert: any }) => (
+    <Dialog>
+      <DialogTrigger asChild>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="absolute top-2 left-2 p-2 bg-blue-500 text-white rounded-full border-2 border-black hover:bg-blue-600 transition-colors z-10"
+          aria-label={`View ${cert.name} certificate`}
+        >
+          <ZoomIn className="w-4 h-4" />
+        </motion.button>
+      </DialogTrigger>
+      <DialogContent className="max-w-7xl w-[95vw] h-[95vh] p-0 bg-white border-8 border-black">
+        <div className="relative h-full flex flex-col">
+          <div className="p-6 border-b-4 border-black bg-yellow-300 flex-shrink-0">
+            <h3 className="text-3xl font-bold manga-title text-black mb-2">{cert.name}</h3>
+            <p className="text-black font-bold text-lg">
+              {cert.organization} • {cert.date}
+            </p>
+            <div className="flex items-center space-x-2 mt-3">
+              <Badge className="bg-purple-300 text-black border-2 border-black manga-text font-bold">
+                {cert.category}
+              </Badge>
+              <Badge className="bg-blue-300 text-black border-2 border-black manga-text font-bold">{cert.level}</Badge>
+            </div>
+          </div>
+          <div className="p-6 flex-1 flex flex-col">
+            <div className="relative w-full flex-1 mb-4 min-h-[500px]">
+              <Image
+                src={cert.image || "/placeholder.svg"}
+                alt={`${cert.name} Certificate`}
+                fill
+                className="object-contain rounded-lg border-4 border-black"
+                sizes="95vw"
+                priority
+              />
+            </div>
+            <div className="flex-shrink-0">
+              <p className="text-black font-bold leading-relaxed text-lg">{cert.description}</p>
+            </div>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  )
+
+  // Enhanced Certificate Preview with Click-to-Expand
+  const CertificatePreview = ({ cert }: { cert: any }) => (
+    <Dialog>
+      <DialogTrigger asChild>
+        <motion.div
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          className="mb-4 relative w-full h-32 rounded-lg overflow-hidden border-4 border-black cursor-pointer group"
+        >
+          <Image
+            src={cert.image || "/placeholder.svg"}
+            alt={`${cert.name} Certificate Preview`}
+            fill
+            className="object-cover group-hover:scale-105 transition-transform duration-300"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          />
+          <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-300 flex items-center justify-center">
+            <motion.div whileHover={{ scale: 1.1 }} className="bg-white/90 rounded-full p-3 border-2 border-black">
+              <ZoomIn className="w-6 h-6 text-black" />
+            </motion.div>
+          </div>
+          <div className="absolute top-2 left-2 bg-yellow-300 border-2 border-black rounded px-2 py-1">
+            <span className="text-xs font-bold manga-text text-black">CLICK TO ENLARGE</span>
+          </div>
+        </motion.div>
+      </DialogTrigger>
+      <DialogContent className="max-w-7xl w-[95vw] h-[95vh] p-0 bg-white border-8 border-black">
+        <div className="relative h-full flex flex-col">
+          <div className="p-6 border-b-4 border-black bg-yellow-300 flex-shrink-0">
+            <h3 className="text-3xl font-bold manga-title text-black mb-2">{cert.name}</h3>
+            <p className="text-black font-bold text-lg">
+              {cert.organization} • {cert.date}
+            </p>
+            <div className="flex items-center space-x-2 mt-3">
+              <Badge className="bg-purple-300 text-black border-2 border-black manga-text font-bold">
+                {cert.category}
+              </Badge>
+              <Badge className="bg-blue-300 text-black border-2 border-black manga-text font-bold">{cert.level}</Badge>
+            </div>
+          </div>
+          <div className="p-6 flex-1 flex flex-col">
+            <div className="relative w-full flex-1 mb-4 min-h-[500px]">
+              <Image
+                src={cert.image || "/placeholder.svg"}
+                alt={`${cert.name} Certificate`}
+                fill
+                className="object-contain rounded-lg border-4 border-black"
+                sizes="95vw"
+                priority
+              />
+            </div>
+            <div className="flex-shrink-0">
+              <p className="text-black font-bold leading-relaxed text-lg">{cert.description}</p>
+            </div>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  )
 
   // Manga Robot Illustration Component
   const MangaRobotIllustration = ({ className = "", size = 150 }: { className?: string; size?: number }) => (
@@ -1069,6 +1405,9 @@ export default function RoboticPortfolio() {
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
+                      {/* Project Image Gallery */}
+                      <ProjectImageGallery project={project} />
+
                       <div className="flex flex-wrap gap-2 mb-6">
                         {project.tech.map((tech, techIndex) => (
                           <motion.div key={techIndex} whileHover={{ scale: 1.05 }}>
@@ -1291,6 +1630,7 @@ export default function RoboticPortfolio() {
                 >
                   <MangaPanel className="bg-white relative h-full">
                     <MangaActionEffect effect="CERTIFIED!" className="top-2 right-2" />
+                    <CertificateModal cert={cert} />
 
                     <Card className="bg-transparent border-0 shadow-none h-full">
                       <CardHeader>
@@ -1331,6 +1671,9 @@ export default function RoboticPortfolio() {
                             {cert.category}
                           </Badge>
                         </div>
+
+                        {/* Enhanced Certificate Image Preview with Click-to-Expand */}
+                        <CertificatePreview cert={cert} />
 
                         <CardDescription className="text-black text-sm leading-relaxed font-bold">
                           {cert.description}
