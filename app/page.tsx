@@ -107,6 +107,11 @@ export default function RoboticPortfolio() {
         description: "Please allow popups to view the resume, or try downloading it instead.",
         variant: "destructive",
       })
+    } else {
+      toast({
+        title: "Resume Opened! 👁️",
+        description: "Your resume is now open in a new tab.",
+      })
     }
   }
 
@@ -126,32 +131,20 @@ export default function RoboticPortfolio() {
         })
       }, 100)
 
-      // Fetch the PDF file
-      const response = await fetch("/resume/Sujal_Gupta_Resume.pdf")
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch PDF")
-      }
-
-      const blob = await response.blob()
-
-      // Create download link
-      const url = window.URL.createObjectURL(blob)
+      // Create direct download link for the PDF
       const link = document.createElement("a")
-      link.href = url
+      link.href = "/resume/Sujal_Gupta_Resume.pdf"
       link.download = "Sujal_Gupta_Resume.pdf"
       link.style.display = "none"
 
-      // Trigger download
+      // Add to DOM and trigger download
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
 
-      // Clean up the URL object
-      window.URL.revokeObjectURL(url)
-
       // Complete the progress
       setTimeout(() => {
+        clearInterval(progressInterval)
         setDownloadProgress(100)
         toast({
           title: "Download Complete! 🎯",
@@ -394,7 +387,7 @@ export default function RoboticPortfolio() {
       category: "Innovation & Leadership",
       icon: <Trophy className="w-6 h-6" />,
       description:
-        "Advanced level Innovation Ambassador training conducted by MoE's Innovation Cell & AICTE during the IIC calendar year 2024-25, focusing on advanced innovation strategies and leadership development.",
+        "Advanced level Innovation Ambassador training program focusing on innovation methodologies and leadership in educational technology as part of MoE's Innovation Cell & AICTE initiative.",
       color: "from-yellow-400 to-orange-600",
       image: "/images/certificates/moe-innovation-ambassador-advanced.png",
     },
