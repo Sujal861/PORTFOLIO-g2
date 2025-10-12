@@ -1,7 +1,8 @@
 "use client"
 
 import type React from "react"
-import { useState, useEffect, useRef, useMemo } from "react"
+
+import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -24,6 +25,7 @@ import {
   Menu,
   X,
   Send,
+  Download,
   Eye,
   Wrench,
   Brain,
@@ -54,65 +56,31 @@ import {
 import { useToast } from "@/hooks/use-toast"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
-import { TooltipProvider } from "@/components/ui/tooltip"
-import { cn } from "@/lib/utils"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
-// Resume public path
-const RESUME_PATH = "/resume/Sujal_Gupta_Resume.pdf"
-
-type SectionId = "hero" | "about" | "experience" | "education" | "projects" | "skills" | "certifications" | "contact"
-
-const sections: { id: SectionId; label: string }[] = [
-  { id: "hero", label: "Home" },
-  { id: "about", label: "About" },
-  { id: "experience", label: "Experience" },
-  { id: "education", label: "Education" },
-  { id: "projects", label: "Projects" },
-  { id: "skills", label: "Skills" },
-  { id: "certifications", label: "Certifications" },
-  { id: "contact", label: "Contact" },
-]
+// Use the new resume PDF by default
+const RESUME_PATH = "/api/resume"
 
 export default function RoboticPortfolio() {
   const [isLoading, setIsLoading] = useState(true)
-  const [activeSection, setActiveSection] = useState<SectionId>("hero")
+  const [activeSection, setActiveSection] = useState("hero")
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [isDownloading, setIsDownloading] = useState(false)
+  const [downloadProgress, setDownloadProgress] = useState(0)
   const [resumeReady, setResumeReady] = useState<boolean | null>(null)
   const [scrolled, setScrolled] = useState(false)
   const { toast } = useToast()
-  const lastYRef = useRef(0) // kept if needed later
-
-  // Intersection observer for active section highlighting
-  useEffect(() => {
-    const obs = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const id = entry.target.getAttribute("id") as SectionId | null
-            if (id) setActiveSection(id)
-          }
-        })
-      },
-      { rootMargin: "0px 0px -60% 0px", threshold: 0.2 },
-    )
-
-    sections.forEach(({ id }) => {
-      const el = document.getElementById(id)
-      if (el) obs.observe(el)
-    })
-    return () => obs.disconnect()
-  }, [])
 
   useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 800)
     return () => clearTimeout(timer)
   }, [])
 
-  // Navbar scrolled bg effect
+  //Navbar scrolled state
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 4)
     onScroll()
-    window.addEventListener("scroll", onScroll, { passive: true })
+    window.addEventListener("scroll", onScroll)
     return () => window.removeEventListener("scroll", onScroll)
   }, [])
 
@@ -126,7 +94,7 @@ export default function RoboticPortfolio() {
     }
   }, [mobileMenuOpen])
 
-  // Verify resume endpoint exists so buttons don't error
+  // Verify resume exists so buttons don't error
   useEffect(() => {
     let cancelled = false
     async function checkPdf() {
@@ -143,57 +111,30 @@ export default function RoboticPortfolio() {
     }
   }, [])
 
-  // Track active section based on scroll (duplicate logic, intersection observer is preferred)
-  // useEffect(() => {
-  //   const sections = ["hero", "about", "experience", "education", "projects", "skills", "certifications", "contact"]
-  //   const handleScroll = () => {
-  //     const scrollPosition = window.scrollY + 120 // Offset for fixed nav
-  //     for (const section of sections) {
-  //       const element = document.getElementById(section)
-  //       if (element) {
-  //         const { offsetTop, offsetHeight } = element
-  //         if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
-  //           setActiveSection(section as SectionId)
-  //           break
-  //         }
-  //       }
-  //     }
-  //   }
-  //   window.addEventListener("scroll", handleScroll, { passive: true })
-  //   return () => window.removeEventListener("scroll", handleScroll)
-  // }, [])
+  useEffect(() => {
+    const sections = ["hero", "about", "experience", "education", "projects", "skills", "certifications", "contact"]
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + 120 // Offset for fixed nav
+      for (const section of sections) {
+        const element = document.getElementById(section)
+        if (element) {
+          const { offsetTop, offsetHeight } = element
+          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+            setActiveSection(section)
+            break
+          }
+        }
+      }
+    }
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId)
     if (element) element.scrollIntoView({ behavior: "smooth", block: "start" })
     setMobileMenuOpen(false)
   }
-
-  // Move the nav useMemo block so it runs before the early return. Insert the following code RIGHT AFTER the scrollToSection function and BEFORE the experiences array:
-  const nav = useMemo(
-    () =>
-      sections.map(({ id, label }) => {
-        const isActive = activeSection === id
-        return (
-          <button
-            key={id}
-            onClick={() => scrollToSection(id)}
-            aria-current={isActive ? "page" : undefined}
-            className={cn(
-              "px-3 py-2 rounded-sm text-sm manga-text transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-black relative",
-              "hover:text-black",
-              isActive
-                ? "text-black font-extrabold bg-amber-300 border-2 border-black rounded shadow-[3px_3px_0_#000]"
-                : "text-gray-700 hover:bg-gray-100",
-            )}
-          >
-            {label}
-            {isActive && <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full" />}
-          </button>
-        )
-      }),
-    [activeSection],
-  )
 
   const handleViewResume = () => {
     if (resumeReady === false) {
@@ -204,11 +145,11 @@ export default function RoboticPortfolio() {
       })
       return
     }
-    const newWindow = window.open(RESUME_PATH, "_blank", "noopener,noreferrer")
+    const newWindow = window.open(`${RESUME_PATH}?inline=1`, "_blank", "noopener,noreferrer")
     if (!newWindow) {
       toast({
         title: "Popup Blocked",
-        description: "Please allow popups to view the resume.",
+        description: "Please allow popups to view the resume, or try downloading it instead.",
         variant: "destructive",
       })
     } else {
@@ -216,6 +157,59 @@ export default function RoboticPortfolio() {
         title: "Resume Opened! 👁️",
         description: "Your resume is now open in a new tab.",
       })
+    }
+  }
+
+  const handleDownloadResume = async () => {
+    if (resumeReady === false) {
+      toast({
+        title: "Resume Not Found",
+        description: "The resume file is not available right now. Please try again later.",
+        variant: "destructive",
+      })
+      return
+    }
+    setIsDownloading(true)
+    setDownloadProgress(0)
+    try {
+      const progressInterval = setInterval(() => {
+        setDownloadProgress((prev) => {
+          if (prev >= 90) {
+            clearInterval(progressInterval)
+            return 90
+          }
+          return prev + 10
+        })
+      }, 100)
+
+      const link = document.createElement("a")
+      link.href = RESUME_PATH
+      link.download = "Sujal_Gupta_Resume.pdf"
+      link.style.display = "none"
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+
+      setTimeout(() => {
+        setDownloadProgress(100)
+        toast({
+          title: "Download Complete! 🎯",
+          description: "Your resume has been downloaded successfully!",
+        })
+        setTimeout(() => {
+          setIsDownloading(false)
+          setDownloadProgress(0)
+        }, 800)
+      }, 400)
+    } catch (error) {
+      console.error("Download failed:", error)
+      toast({
+        title: "Download Failed ❌",
+        description: "An error occurred while downloading the resume. Please try again.",
+        variant: "destructive",
+      })
+      setIsDownloading(false)
+      setDownloadProgress(0)
     }
   }
 
@@ -620,22 +614,25 @@ export default function RoboticPortfolio() {
   ]
 
   const [selectedCategory, setSelectedCategory] = useState("All")
+
   const filteredCertifications =
     selectedCategory === "All" ? certifications : certifications.filter((cert) => cert.category === selectedCategory)
 
   // Project Image Gallery Component
   const ProjectImageGallery = ({ project }: { project: any }) => {
-    const [currentImageIndex, setCurrentImageIndex] = useState(0)
+    const [currentImageIndex, setIsCurrentImageIndex] = useState(0) // Corrected state update function name
+    const setCurrentImageIndex = (index: number) => setIsCurrentImageIndex(index) // Alias for clarity
+
     if (!project.images || project.images.length === 0) return null
 
-    const nextImage = () => setCurrentImageIndex((prev) => (prev + 1) % project.images.length)
-    const prevImage = () => setCurrentImageIndex((prev) => (prev - 1 + project.images.length) % project.images.length)
+    const nextImage = () => setIsCurrentImageIndex((prev) => (prev + 1) % project.images.length)
+    const prevImage = () => setIsCurrentImageIndex((prev) => (prev - 1 + project.images.length) % project.images.length)
 
     return (
       <div className="mb-6">
         <div className="relative w-full h-48 rounded-lg overflow-hidden border-4 border-black bg-gray-100">
           <Image
-            src={project.images[currentImageIndex].src || "/placeholder.svg?height=400&width=600&query=robotic+project"}
+            src={project.images[currentImageIndex].src || "/placeholder.svg"}
             alt={project.images[currentImageIndex].alt}
             fill
             className="object-cover transition-all duration-300"
@@ -702,15 +699,7 @@ export default function RoboticPortfolio() {
                 <div className="p-6">
                   <div className="relative w-full h-96 mb-4">
                     <Image
-                      src={
-                        project.images[currentImageIndex].src ||
-                        "/placeholder.svg?height=800&width=1200&query=robotics+zoom" ||
-                        "/placeholder.svg" ||
-                        "/placeholder.svg" ||
-                        "/placeholder.svg" ||
-                        "/placeholder.svg" ||
-                        "/placeholder.svg"
-                      }
+                      src={project.images[currentImageIndex].src || "/placeholder.svg"}
                       alt={project.images[currentImageIndex].alt}
                       fill
                       className="object-contain rounded-lg"
@@ -850,7 +839,7 @@ export default function RoboticPortfolio() {
           <div className="p-6 flex-1 flex flex-col">
             <div className="relative w-full flex-1 mb-4 min-h-[500px]">
               <Image
-                src={cert.image || "/placeholder.svg?height=900&width=1600&query=certificate+preview"}
+                src={cert.image || "/placeholder.svg"}
                 alt={`${cert.name} Certificate`}
                 fill
                 className="object-contain rounded-lg border-4 border-black"
@@ -977,13 +966,9 @@ export default function RoboticPortfolio() {
     )
   }
 
-  // Remove the existing nav useMemo block that currently appears BELOW the isLoading check. Delete from:
-  // const nav = useMemo(
-  // down to and including its closing:
-  // ), [activeSection], )
-
   return (
     <div className="min-h-screen bg-white text-black overflow-x-hidden">
+      {/* Skip link for accessibility */}
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] bg-black text-white px-3 py-2 rounded border-2 border-white"
@@ -1005,6 +990,7 @@ export default function RoboticPortfolio() {
         }`}
       >
         <div className="relative">
+          {/* Manga halftone overlay */}
           <div className="absolute inset-0 pointer-events-none opacity-10 manga-halftone" aria-hidden="true" />
           <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 relative">
             <div className="flex justify-between items-center h-16">
@@ -1019,11 +1005,43 @@ export default function RoboticPortfolio() {
               </button>
 
               {/* Desktop links */}
-              <div className="hidden md:flex items-center gap-3">{nav}</div>
+              <div className="hidden md:flex items-center gap-3">
+                {["hero", "about", "experience", "education", "projects", "skills", "certifications", "contact"].map(
+                  (section) => (
+                    <button
+                      key={section}
+                      onClick={() => scrollToSection(section)}
+                      aria-current={activeSection === section ? "page" : undefined}
+                      className={`relative px-3 py-2 text-sm manga-text rounded-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-black ${
+                        activeSection === section
+                          ? "text-black font-extrabold bg-amber-300 border-2 border-black rounded shadow-[3px_3px_0_#000]"
+                          : "text-gray-700 hover:text-black"
+                      }`}
+                    >
+                      {section === "hero" ? "HOME" : section.toUpperCase()}
+                    </button>
+                  ),
+                )}
+              </div>
 
               {/* Desktop actions */}
               <div className="hidden md:flex items-center gap-2">
                 <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={handleDownloadResume}
+                        disabled={isDownloading || resumeReady === false}
+                        className="h-10 w-10 text-black bg-amber-200 hover:bg-amber-300 border-2 border-black rounded-md shadow-[3px_3px_0_#000]"
+                        aria-label="Download resume"
+                      >
+                        <Download className="h-4 w-4" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>Download resume</TooltipContent>
+                  </Tooltip>
                   <span
                     className={`ml-1 inline-flex items-center justify-center h-3 w-3 rounded-full border-2 border-black ${
                       resumeReady === true ? "bg-emerald-400" : resumeReady === false ? "bg-red-400" : "bg-amber-300"
@@ -1070,9 +1088,33 @@ export default function RoboticPortfolio() {
               className="md:hidden bg-white border-t-4 border-black shadow-[6px_6px_0_#000]"
             >
               <div className="px-3 py-3 space-y-2">
-                {nav}
+                {["hero", "about", "experience", "education", "projects", "skills", "certifications", "contact"].map(
+                  (section) => (
+                    <button
+                      key={section}
+                      onClick={() => scrollToSection(section)}
+                      aria-current={activeSection === section ? "page" : undefined}
+                      className={`block w-full text-left rounded px-3 py-2 text-sm manga-text border-2 border-black transition-colors ${
+                        activeSection === section
+                          ? "bg-amber-200 text-black"
+                          : "bg-white text-gray-800 hover:bg-gray-100"
+                      }`}
+                    >
+                      {section === "hero" ? "HOME" : section.toUpperCase()}
+                    </button>
+                  ),
+                )}
 
-                <div className="pt-2"></div>
+                <div className="pt-2">
+                  <Button
+                    onClick={handleDownloadResume}
+                    disabled={isDownloading || resumeReady === false}
+                    className="w-full h-10 bg-red-500 text-white hover:bg-red-600 text-xs border-2 border-black shadow-[3px_3px_0_#000]"
+                    size="sm"
+                  >
+                    {isDownloading ? "DOWNLOADING..." : "DOWNLOAD RESUME"}
+                  </Button>
+                </div>
 
                 <div className="flex items-center gap-2">
                   <span
@@ -1095,7 +1137,7 @@ export default function RoboticPortfolio() {
         </AnimatePresence>
       </motion.nav>
 
-      {/* Main content */}
+      {/* Main content anchor for skip link */}
       <main id="main">
         {/* Hero Section */}
         <section
@@ -1258,6 +1300,15 @@ export default function RoboticPortfolio() {
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4">
+                  <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                    <Button
+                      onClick={handleDownloadResume}
+                      disabled={isDownloading || resumeReady === false}
+                      className="bg-red-500 text-white hover:bg-red-600 border-4 border-black manga-text font-bold text-lg"
+                    >
+                      {isDownloading ? "DOWNLOADING..." : "GET RESUME!"}
+                    </Button>
+                  </motion.div>
                   <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
                     <Button
                       onClick={handleViewResume}
@@ -1736,6 +1787,7 @@ export default function RoboticPortfolio() {
                             </Badge>
                           </div>
                           <div className="mb-4">
+                            {/* Preview with click-to-expand */}
                             <Dialog>
                               <DialogTrigger asChild>
                                 <motion.div
@@ -1744,7 +1796,7 @@ export default function RoboticPortfolio() {
                                   className="mb-4 relative w-full h-32 rounded-lg overflow-hidden border-4 border-black cursor-pointer group"
                                 >
                                   <Image
-                                    src={cert.image || "/placeholder.svg?height=180&width=320&query=certificate+thumb"}
+                                    src={cert.image || "/placeholder.svg"}
                                     alt={`${cert.name} Certificate Preview`}
                                     fill
                                     className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -1782,9 +1834,7 @@ export default function RoboticPortfolio() {
                                   <div className="p-6 flex-1 flex flex-col">
                                     <div className="relative w-full flex-1 mb-4 min-h-[500px]">
                                       <Image
-                                        src={
-                                          cert.image || "/placeholder.svg?height=900&width=1600&query=certificate+full"
-                                        }
+                                        src={cert.image || "/placeholder.svg"}
                                         alt={`${cert.name} Certificate`}
                                         fill
                                         className="object-contain rounded-lg border-4 border-black"
