@@ -1,8 +1,7 @@
 "use client"
 
 import type React from "react"
-
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -58,7 +57,7 @@ import { ThemeToggle } from "@/components/theme-toggle"
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
-// Use the new resume PDF by default
+// Download via API route that generates latest PDF
 const RESUME_PATH = "/api/resume"
 
 export default function RoboticPortfolio() {
@@ -70,17 +69,18 @@ export default function RoboticPortfolio() {
   const [resumeReady, setResumeReady] = useState<boolean | null>(null)
   const [scrolled, setScrolled] = useState(false)
   const { toast } = useToast()
+  const lastYRef = useRef(0) // kept if needed later
 
   useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 800)
     return () => clearTimeout(timer)
   }, [])
 
-  //Navbar scrolled state
+  // Navbar scrolled bg effect
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 4)
     onScroll()
-    window.addEventListener("scroll", onScroll)
+    window.addEventListener("scroll", onScroll, { passive: true })
     return () => window.removeEventListener("scroll", onScroll)
   }, [])
 
@@ -94,7 +94,7 @@ export default function RoboticPortfolio() {
     }
   }, [mobileMenuOpen])
 
-  // Verify resume exists so buttons don't error
+  // Verify resume endpoint exists so buttons don't error
   useEffect(() => {
     let cancelled = false
     async function checkPdf() {
@@ -111,6 +111,7 @@ export default function RoboticPortfolio() {
     }
   }, [])
 
+  // Track active section based on scroll
   useEffect(() => {
     const sections = ["hero", "about", "experience", "education", "projects", "skills", "certifications", "contact"]
     const handleScroll = () => {
@@ -126,7 +127,7 @@ export default function RoboticPortfolio() {
         }
       }
     }
-    window.addEventListener("scroll", handleScroll)
+    window.addEventListener("scroll", handleScroll, { passive: true })
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
@@ -614,25 +615,22 @@ export default function RoboticPortfolio() {
   ]
 
   const [selectedCategory, setSelectedCategory] = useState("All")
-
   const filteredCertifications =
     selectedCategory === "All" ? certifications : certifications.filter((cert) => cert.category === selectedCategory)
 
   // Project Image Gallery Component
   const ProjectImageGallery = ({ project }: { project: any }) => {
-    const [currentImageIndex, setIsCurrentImageIndex] = useState(0) // Corrected state update function name
-    const setCurrentImageIndex = (index: number) => setIsCurrentImageIndex(index) // Alias for clarity
-
+    const [currentImageIndex, setCurrentImageIndex] = useState(0)
     if (!project.images || project.images.length === 0) return null
 
-    const nextImage = () => setIsCurrentImageIndex((prev) => (prev + 1) % project.images.length)
-    const prevImage = () => setIsCurrentImageIndex((prev) => (prev - 1 + project.images.length) % project.images.length)
+    const nextImage = () => setCurrentImageIndex((prev) => (prev + 1) % project.images.length)
+    const prevImage = () => setCurrentImageIndex((prev) => (prev - 1 + project.images.length) % project.images.length)
 
     return (
       <div className="mb-6">
         <div className="relative w-full h-48 rounded-lg overflow-hidden border-4 border-black bg-gray-100">
           <Image
-            src={project.images[currentImageIndex].src || "/placeholder.svg"}
+            src={project.images[currentImageIndex].src || "/placeholder.svg?height=400&width=600&query=robotic+project"}
             alt={project.images[currentImageIndex].alt}
             fill
             className="object-cover transition-all duration-300"
@@ -699,7 +697,11 @@ export default function RoboticPortfolio() {
                 <div className="p-6">
                   <div className="relative w-full h-96 mb-4">
                     <Image
-                      src={project.images[currentImageIndex].src || "/placeholder.svg"}
+                      src={
+                        project.images[currentImageIndex].src ||
+                        "/placeholder.svg?height=800&width=1200&query=robotics+zoom" ||
+                        "/placeholder.svg"
+                      }
                       alt={project.images[currentImageIndex].alt}
                       fill
                       className="object-contain rounded-lg"
@@ -839,7 +841,7 @@ export default function RoboticPortfolio() {
           <div className="p-6 flex-1 flex flex-col">
             <div className="relative w-full flex-1 mb-4 min-h-[500px]">
               <Image
-                src={cert.image || "/placeholder.svg"}
+                src={cert.image || "/placeholder.svg?height=900&width=1600&query=certificate+preview"}
                 alt={`${cert.name} Certificate`}
                 fill
                 className="object-contain rounded-lg border-4 border-black"
@@ -968,7 +970,6 @@ export default function RoboticPortfolio() {
 
   return (
     <div className="min-h-screen bg-white text-black overflow-x-hidden">
-      {/* Skip link for accessibility */}
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] bg-black text-white px-3 py-2 rounded border-2 border-white"
@@ -990,7 +991,6 @@ export default function RoboticPortfolio() {
         }`}
       >
         <div className="relative">
-          {/* Manga halftone overlay */}
           <div className="absolute inset-0 pointer-events-none opacity-10 manga-halftone" aria-hidden="true" />
           <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 relative">
             <div className="flex justify-between items-center h-16">
@@ -1137,7 +1137,7 @@ export default function RoboticPortfolio() {
         </AnimatePresence>
       </motion.nav>
 
-      {/* Main content anchor for skip link */}
+      {/* Main content */}
       <main id="main">
         {/* Hero Section */}
         <section
@@ -1787,7 +1787,6 @@ export default function RoboticPortfolio() {
                             </Badge>
                           </div>
                           <div className="mb-4">
-                            {/* Preview with click-to-expand */}
                             <Dialog>
                               <DialogTrigger asChild>
                                 <motion.div
@@ -1796,7 +1795,7 @@ export default function RoboticPortfolio() {
                                   className="mb-4 relative w-full h-32 rounded-lg overflow-hidden border-4 border-black cursor-pointer group"
                                 >
                                   <Image
-                                    src={cert.image || "/placeholder.svg"}
+                                    src={cert.image || "/placeholder.svg?height=180&width=320&query=certificate+thumb"}
                                     alt={`${cert.name} Certificate Preview`}
                                     fill
                                     className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -1834,7 +1833,9 @@ export default function RoboticPortfolio() {
                                   <div className="p-6 flex-1 flex flex-col">
                                     <div className="relative w-full flex-1 mb-4 min-h-[500px]">
                                       <Image
-                                        src={cert.image || "/placeholder.svg"}
+                                        src={
+                                          cert.image || "/placeholder.svg?height=900&width=1600&query=certificate+full"
+                                        }
                                         alt={`${cert.name} Certificate`}
                                         fill
                                         className="object-contain rounded-lg border-4 border-black"
