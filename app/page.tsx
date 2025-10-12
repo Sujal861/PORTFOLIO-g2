@@ -59,7 +59,7 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
 // Use the new resume PDF by default
-const RESUME_PATH = "/api/resume"
+const RESUME_PATH = "/resume/Sujal_Gupta_Resume.pdf"
 
 export default function RoboticPortfolio() {
   const [isLoading, setIsLoading] = useState(true)
@@ -145,7 +145,7 @@ export default function RoboticPortfolio() {
       })
       return
     }
-    const newWindow = window.open(`${RESUME_PATH}?inline=1`, "_blank", "noopener,noreferrer")
+    const newWindow = window.open(RESUME_PATH, "_blank", "noopener,noreferrer")
     if (!newWindow) {
       toast({
         title: "Popup Blocked",
