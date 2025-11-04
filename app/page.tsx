@@ -401,7 +401,7 @@ export default function RoboticPortfolio() {
         {
           src: "/videos/webots-line-following.mp4",
           type: "video/mp4",
-          caption: "Line-following behavior in Webots",
+          caption: "Line following automation demo in Webots",
         },
       ],
     },
@@ -421,6 +421,44 @@ export default function RoboticPortfolio() {
           src: "/videos/quadruped-spot-inspired.mp4",
           type: "video/mp4",
           caption: "Quadruped gait and articulation showcase",
+        },
+      ],
+    },
+    {
+      title: "TurtleBot3 ROS Navigation",
+      description:
+        "Embarked on first robotics adventure with ROS and TurtleBot3 using ROS Noetic, Gazebo simulation, and slam_toolbox. Developed autonomous navigation and mapping capabilities demonstrating real-time robotic systems and independent environment exploration.",
+      tech: ["ROS", "TurtleBot3", "Gazebo", "SLAM", "slam_toolbox", "Robotics"],
+      icon: <Robot className="w-6 h-6" />,
+      color: "from-blue-400 to-cyan-600",
+      category: "Robotics",
+      mangaEffect: "ROS ADVENTURE!",
+      githubLink:
+        "https://www.linkedin.com/posts/sujalgupta352_ros-robotics-turtlebot3-activity-7386867800927248384-WXvx?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEAPEqwBeIO75JqhpmqPEECNHh_RcopKisM",
+      videos: [
+        {
+          src: "/videos/turtlebot3-ros-navigation.mp4",
+          type: "video/mp4",
+          caption: "TurtleBot3 autonomous navigation with SLAM in Gazebo",
+        },
+      ],
+    },
+    {
+      title: "Custom DWA Local Planner - TurtleBot3",
+      description:
+        "Successfully developed and integrated a custom Dynamic Window Approach (DWA) local planner from scratch for TurtleBot3 in ROS2 Humble, running in Gazebo simulation and real-world conditions. Advanced expertise in motion planning, trajectory prediction, cost function design, ROS2 node development, and autonomous navigation with adaptive planning algorithms.",
+      tech: ["ROS2", "TurtleBot3", "DWA", "Gazebo", "RViz", "Motion Planning", "C++"],
+      icon: <Robot className="w-6 h-6" />,
+      color: "from-purple-400 to-indigo-600",
+      category: "Robotics",
+      mangaEffect: "PLANNER POWER!",
+      githubLink:
+        "https://www.linkedin.com/posts/sujalgupta352_successfully-developed-and-integrated-a-custom-activity-7390761837262409728-dZ9Z?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEAPEqwBeIO75JqhpmqPEECNHh_RcopKisM",
+      videos: [
+        {
+          src: "/videos/turtlebot3-dwa-planner.mp4",
+          type: "video/mp4",
+          caption: "Custom DWA planner navigation in Gazebo and real-world",
         },
       ],
     },
@@ -1870,13 +1908,18 @@ export default function RoboticPortfolio() {
 
             <div className="flex justify-center mt-12">
               <motion.div
-                animate={{ rotate: 360, scale: [1, 1.1, 1] }}
-                transition={{
-                  rotate: { duration: 12, repeat: Number.POSITIVE_INFINITY, ease: "linear" },
-                  scale: { duration: 3, repeat: Number.POSITIVE_INFINITY },
-                }}
+                animate={{ rotate: 360 }}
+                transition={{ duration: 8, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
+                className="relative"
               >
                 <Target className="w-32 h-32 text-black" />
+                <motion.div
+                  animate={{ rotate: -360 }}
+                  transition={{ duration: 6, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
+                  className="absolute inset-0"
+                >
+                  <Cog className="w-32 h-32 text-black opacity-50" />
+                </motion.div>
               </motion.div>
             </div>
           </div>
