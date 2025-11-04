@@ -1,5 +1,7 @@
 "use client"
 
+import { TooltipContent } from "@/components/ui/tooltip"
+
 import type React from "react"
 
 import { useState, useEffect } from "react"
@@ -56,7 +58,7 @@ import {
 import { useToast } from "@/hooks/use-toast"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Tooltip, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
 // Use the new resume PDF by default
 const RESUME_PATH = "/resume/Sujal_Gupta_Resume.pdf"
@@ -241,26 +243,13 @@ export default function RoboticPortfolio() {
       color: "from-green-400 to-blue-600",
       mangaEffect: "ROBOT MASTERY!",
     },
-    {
-      title: "Robotics Project Lead",
-      company: "Bangalore Technological Institute",
-      duration: "Dec 2023",
-      location: "Bangalore",
-      description: [
-        "Led a team to design and build the R C Robot (Kalabhairav), integrating electronic components.",
-        "Presented project outcomes at university technical symposiums.",
-      ],
-      icon: <Trophy className="w-6 h-6" />,
-      color: "from-yellow-400 to-orange-600",
-      mangaEffect: "VICTORY!",
-    },
   ]
 
   const education = {
     degree: "Bachelor of Engineering in Robotics & AI",
     university: "Bangalore Technological Institute",
     duration: "2022 - 2026 (Expected)",
-    gpa: "9.0/10.0",
+    gpa: "8.64/10.0", // Updated GPA from 9.0 to 8.64
     highlights: [
       "Specialized in autonomous systems, machine learning, and intelligent robotics.",
       "Relevant coursework: Advanced Robotics, AI Algorithms, Computer Vision, Embedded Systems.",
@@ -1023,37 +1012,57 @@ export default function RoboticPortfolio() {
         initial={{ y: -8, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ type: "spring", stiffness: 260, damping: 24 }}
-        className={`fixed top-0 left-0 right-0 z-50 border-b-4 border-black transition-colors ${
-          scrolled ? "bg-white/95 shadow-[6px_6px_0_#000] supports-[backdrop-filter]:backdrop-blur-sm" : "bg-white/85"
+        className={`fixed top-0 left-0 right-0 z-50 border-b-4 border-black transition-all ${
+          scrolled
+            ? "bg-gradient-to-r from-amber-100 to-amber-50 shadow-[8px_8px_0_#000] supports-[backdrop-filter]:backdrop-blur-sm"
+            : "bg-gradient-to-r from-amber-100 to-transparent"
         }`}
       >
         <div className="relative">
           {/* Manga halftone overlay */}
-          <div className="absolute inset-0 pointer-events-none opacity-10 manga-halftone" aria-hidden="true" />
+          <div className="absolute inset-0 pointer-events-none opacity-5 manga-halftone" aria-hidden="true" />
+
           <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 relative">
-            <div className="flex justify-between items-center h-16">
-              {/* Brand */}
+            <div className="flex justify-between items-center h-20">
+              {/* Brand - More Prominent */}
               <button
                 onClick={() => scrollToSection("hero")}
                 aria-label="Go to home"
-                className="inline-flex items-center gap-2 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-black"
+                className="inline-flex items-center gap-3 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-black group"
               >
-                <Robot className="w-7 h-7 text-black" />
-                <span className="text-lg font-bold manga-title tracking-tight text-black">SUJAL.GUPTA</span>
+                {/* Animated robot icon with border */}
+                <div className="relative">
+                  <div className="absolute inset-0 bg-black rounded-lg opacity-0 group-hover:opacity-10 transition-opacity" />
+                  <Robot className="w-9 h-9 text-black group-hover:scale-110 transition-transform" />
+                </div>
+
+                {/* Brand text with unique styling */}
+                <div className="flex flex-col leading-tight">
+                  <span className="text-xs font-bold tracking-widest text-gray-600 uppercase">Engineer</span>
+                  <span className="text-xl font-black manga-title tracking-wider text-black drop-shadow-[2px_2px_0_rgba(0,0,0,0.1)]">
+                    SUJAL.GUPTA.B
+                  </span>
+                </div>
+
+                {/* Decorative accent */}
+                <div className="hidden sm:flex items-center gap-1 ml-2 pl-2 border-l-3 border-black">
+                  <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+                  <span className="text-xs font-bold text-black">ACTIVE</span>
+                </div>
               </button>
 
               {/* Desktop links */}
-              <div className="hidden md:flex items-center gap-3">
+              <div className="hidden md:flex items-center gap-2">
                 {["hero", "about", "experience", "education", "projects", "skills", "certifications", "contact"].map(
                   (section) => (
                     <button
                       key={section}
                       onClick={() => scrollToSection(section)}
                       aria-current={activeSection === section ? "page" : undefined}
-                      className={`relative px-3 py-2 text-sm manga-text rounded-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-black ${
+                      className={`relative px-3 py-2 text-xs font-bold manga-text rounded-sm transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-black ${
                         activeSection === section
-                          ? "text-black font-extrabold bg-amber-300 border-2 border-black rounded shadow-[3px_3px_0_#000]"
-                          : "text-gray-700 hover:text-black"
+                          ? "text-black bg-red-400 border-2 border-black rounded shadow-[3px_3px_0_#000] scale-105"
+                          : "text-gray-700 hover:text-black hover:bg-amber-200 border-2 border-transparent hover:border-black"
                       }`}
                     >
                       {section === "hero" ? "HOME" : section.toUpperCase()}
@@ -1063,7 +1072,7 @@ export default function RoboticPortfolio() {
               </div>
 
               {/* Desktop actions */}
-              <div className="hidden md:flex items-center gap-2">
+              <div className="hidden md:flex items-center gap-3">
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
@@ -1072,17 +1081,21 @@ export default function RoboticPortfolio() {
                         size="icon"
                         onClick={handleDownloadResume}
                         disabled={isDownloading || resumeReady === false}
-                        className="h-10 w-10 text-black bg-amber-200 hover:bg-amber-300 border-2 border-black rounded-md shadow-[3px_3px_0_#000]"
+                        className="h-11 w-11 text-black bg-red-500 hover:bg-red-600 border-3 border-black rounded-lg shadow-[4px_4px_0_#000] font-bold transition-all hover:scale-110"
                         aria-label="Download resume"
                       >
-                        <Download className="h-4 w-4" />
+                        <Download className="h-5 w-5" />
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent>Download resume</TooltipContent>
                   </Tooltip>
                   <span
-                    className={`ml-1 inline-flex items-center justify-center h-3 w-3 rounded-full border-2 border-black ${
-                      resumeReady === true ? "bg-emerald-400" : resumeReady === false ? "bg-red-400" : "bg-amber-300"
+                    className={`ml-1 inline-flex items-center justify-center h-4 w-4 rounded-full border-2 border-black font-bold text-xs ${
+                      resumeReady === true
+                        ? "bg-emerald-400"
+                        : resumeReady === false
+                          ? "bg-red-500"
+                          : "bg-amber-300 animate-pulse"
                     }`}
                     aria-live="polite"
                   >
@@ -1090,25 +1103,25 @@ export default function RoboticPortfolio() {
                       {resumeReady === true ? "PDF ready" : resumeReady === false ? "PDF missing" : "Checking PDF"}
                     </span>
                   </span>
-                  <div className="ml-1 border-2 border-black rounded-md shadow-[3px_3px_0_#000] overflow-hidden">
+                  <div className="ml-1 border-3 border-black rounded-lg shadow-[3px_3px_0_#000] overflow-hidden bg-white">
                     <ThemeToggle />
                   </div>
                 </TooltipProvider>
               </div>
 
               {/* Mobile actions */}
-              <div className="flex items-center gap-1 md:hidden">
-                <div className="border-2 border-black rounded-md shadow-[3px_3px_0_#000] overflow-hidden">
+              <div className="flex items-center gap-2 md:hidden">
+                <div className="border-2 border-black rounded-md shadow-[2px_2px_0_#000] overflow-hidden bg-white">
                   <ThemeToggle />
                 </div>
                 <button
-                  className="ml-2 p-2 rounded border-2 border-black bg-white shadow-[3px_3px_0_#000] focus:outline-none focus-visible:ring-2 focus-visible:ring-black text-black"
+                  className="p-2 rounded border-2 border-black bg-red-500 hover:bg-red-600 text-white shadow-[3px_3px_0_#000] focus:outline-none focus-visible:ring-2 focus-visible:ring-black font-bold transition-all"
                   onClick={() => setMobileMenuOpen((v) => !v)}
                   aria-label="Toggle menu"
                   aria-expanded={mobileMenuOpen}
                   aria-controls="mobile-nav"
                 >
-                  {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                  {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
                 </button>
               </div>
             </div>
@@ -1123,7 +1136,7 @@ export default function RoboticPortfolio() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="md:hidden bg-white border-t-4 border-black shadow-[6px_6px_0_#000]"
+              className="md:hidden bg-gradient-to-b from-amber-100 to-amber-50 border-t-4 border-black shadow-[6px_6px_0_#000]"
             >
               <div className="px-3 py-3 space-y-2">
                 {["hero", "about", "experience", "education", "projects", "skills", "certifications", "contact"].map(
@@ -1132,10 +1145,10 @@ export default function RoboticPortfolio() {
                       key={section}
                       onClick={() => scrollToSection(section)}
                       aria-current={activeSection === section ? "page" : undefined}
-                      className={`block w-full text-left rounded px-3 py-2 text-sm manga-text border-2 border-black transition-colors ${
+                      className={`block w-full text-left rounded px-3 py-2 text-sm manga-text border-2 border-black transition-all font-bold ${
                         activeSection === section
-                          ? "bg-amber-200 text-black"
-                          : "bg-white text-gray-800 hover:bg-gray-100"
+                          ? "bg-red-400 text-black shadow-[3px_3px_0_#000]"
+                          : "bg-white text-gray-800 hover:bg-amber-200 hover:border-black"
                       }`}
                     >
                       {section === "hero" ? "HOME" : section.toUpperCase()}
@@ -1147,17 +1160,21 @@ export default function RoboticPortfolio() {
                   <Button
                     onClick={handleDownloadResume}
                     disabled={isDownloading || resumeReady === false}
-                    className="w-full h-10 bg-red-500 text-white hover:bg-red-600 text-xs border-2 border-black shadow-[3px_3px_0_#000]"
+                    className="w-full h-11 bg-red-500 text-white hover:bg-red-600 text-xs border-2 border-black shadow-[3px_3px_0_#000] font-bold"
                     size="sm"
                   >
                     {isDownloading ? "DOWNLOADING..." : "DOWNLOAD RESUME"}
                   </Button>
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 p-2 bg-white border-2 border-black rounded">
                   <span
-                    className={`inline-flex h-3 w-3 rounded-full border-2 border-black ${
-                      resumeReady === true ? "bg-emerald-400" : resumeReady === false ? "bg-red-400" : "bg-amber-300"
+                    className={`inline-flex h-3 w-3 rounded-full border-2 border-black font-bold ${
+                      resumeReady === true
+                        ? "bg-emerald-400"
+                        : resumeReady === false
+                          ? "bg-red-500"
+                          : "bg-amber-300 animate-pulse"
                     }`}
                     aria-live="polite"
                   >
@@ -1165,7 +1182,7 @@ export default function RoboticPortfolio() {
                       {resumeReady === true ? "PDF ready" : resumeReady === false ? "PDF missing" : "Checking PDF"}
                     </span>
                   </span>
-                  <span className="text-xs manga-text text-black">
+                  <span className="text-xs manga-text text-black font-bold">
                     {resumeReady === true ? "PDF READY" : resumeReady === false ? "PDF MISSING" : "CHECKING..."}
                   </span>
                 </div>
@@ -1194,7 +1211,7 @@ export default function RoboticPortfolio() {
                 >
                   <MangaActionEffect effect="HERO APPEARS!" className="top-0 right-0" />
                   <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold mb-6 manga-title text-black leading-tight">
-                    SUJAL GUPTA
+                    SUJAL GUPTA B
                   </h1>
                   <motion.div
                     initial={{ opacity: 0 }}
