@@ -1,76 +1,76 @@
 "use client"
 
-import { TooltipContent } from "@/components/ui/tooltip"
-
 import type React from "react"
 
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Badge } from "@/components/ui/badge"
 import Image from "next/image"
 import {
-  Bot as Robot,
-  Code,
-  Cpu,
+  ChevronDown,
+  Download,
+  MapPin,
+  Award,
+  Building,
+  Calendar,
+  GraduationCap,
+  Star,
   Zap,
+  ExternalLink,
+  Github,
   Mail,
   Phone,
-  MapPin,
-  Github,
-  Linkedin,
-  ExternalLink,
-  ChevronDown,
+  Send,
   Menu,
   X,
-  Send,
-  Download,
-  Eye,
-  Wrench,
-  Brain,
-  Monitor,
-  Users,
-  Award,
-  Calendar,
-  Building,
-  CheckCircle,
-  Star,
-  Trophy,
-  GraduationCap,
-  Settings,
+  Bot as Robot,
   BookOpen,
-  Target,
+  Settings,
   Cog,
-  Database,
+  Target,
+  Eye,
   Wifi,
   Layers,
+  Cpu,
+  Database,
+  Brain,
+  Users,
+  CheckCircle,
   ZoomIn,
+  Linkedin,
   ChevronLeft,
   ChevronRight,
-  Shield,
-  PlayCircle,
   Film,
+  PlayCircle,
+  Code,
+  Shield,
+  Monitor,
+  Wrench,
+  Trophy,
   ShoppingCart,
 } from "lucide-react"
-import { useToast } from "@/hooks/use-toast"
-import { ThemeToggle } from "@/components/theme-toggle"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
-import { Tooltip, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { ThemeToggle } from "@/components/theme-toggle"
+import { useToast } from "@/components/ui/use-toast"
 
 // Use the new resume PDF by default
 const RESUME_PATH = "/resume/Sujal_Gupta_Resume.pdf"
 
 export default function RoboticPortfolio() {
+  // Moved all state hooks inside the component
   const [isLoading, setIsLoading] = useState(true)
+  const [scrolled, setScrolled] = useState(false)
   const [activeSection, setActiveSection] = useState("hero")
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  // const [selectedCategory, setSelectedCategory] = useState("All") // Redundant state, removed
   const [isDownloading, setIsDownloading] = useState(false)
   const [downloadProgress, setDownloadProgress] = useState(0)
   const [resumeReady, setResumeReady] = useState<boolean | null>(null)
-  const [scrolled, setScrolled] = useState(false)
   const { toast } = useToast()
 
   useEffect(() => {
@@ -79,11 +79,14 @@ export default function RoboticPortfolio() {
   }, [])
 
   //Navbar scrolled state
+  // Modify existing useEffect to use new scroll state logic
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 4)
-    onScroll()
-    window.addEventListener("scroll", onScroll)
-    return () => window.removeEventListener("scroll", onScroll)
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 4)
+    }
+    handleScroll()
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
   // Prevent body scroll when mobile menu open
@@ -97,20 +100,18 @@ export default function RoboticPortfolio() {
   }, [mobileMenuOpen])
 
   // Verify resume exists so buttons don't error
+  // Refactor checkPdf to a standalone function and update the useEffect
+  const checkResumeFile = async () => {
+    try {
+      const res = await fetch(RESUME_PATH, { method: "HEAD", cache: "no-store" })
+      setResumeReady(res.ok)
+    } catch {
+      setResumeReady(false)
+    }
+  }
+
   useEffect(() => {
-    let cancelled = false
-    async function checkPdf() {
-      try {
-        const res = await fetch(RESUME_PATH, { method: "HEAD", cache: "no-store" })
-        if (!cancelled) setResumeReady(res.ok)
-      } catch {
-        if (!cancelled) setResumeReady(false)
-      }
-    }
-    checkPdf()
-    return () => {
-      cancelled = true
-    }
+    checkResumeFile()
   }, [])
 
   useEffect(() => {
@@ -215,6 +216,7 @@ export default function RoboticPortfolio() {
     }
   }
 
+  // Moved all data arrays and component definitions inside the main component function
   const experiences = [
     {
       title: "Vice Secretary",
@@ -453,6 +455,19 @@ export default function RoboticPortfolio() {
     },
   ]
 
+  const educationData = {
+    // Renamed to avoid conflict with id="education"
+    degree: "Bachelor of Engineering in Robotics & AI",
+    university: "Bangalore Technological Institute",
+    duration: "2022 - 2026 (Expected)",
+    gpa: "8.64/10.0", // Updated GPA from 9.0 to 8.64
+    highlights: [
+      "Specialized in autonomous systems, machine learning, and intelligent robotics.",
+      "Relevant coursework: Advanced Robotics, AI Algorithms, Computer Vision, Embedded Systems.",
+      "Actively participated in robotics club and inter-university hackathons.",
+    ],
+  }
+
   const skills = [
     { name: "Python", level: 90, icon: <Code className="w-5 h-5" />, color: "from-yellow-400 to-green-500" },
     { name: "C++", level: 85, icon: <Code className="w-5 h-5" />, color: "from-blue-400 to-purple-500" },
@@ -654,6 +669,7 @@ export default function RoboticPortfolio() {
     "App Development",
   ]
 
+  // Use the updated state variable
   const [selectedCategory, setSelectedCategory] = useState("All")
 
   const filteredCertifications =
@@ -661,13 +677,12 @@ export default function RoboticPortfolio() {
 
   // Project Image Gallery Component
   const ProjectImageGallery = ({ project }: { project: any }) => {
-    const [currentImageIndex, setIsCurrentImageIndex] = useState(0) // Corrected state update function name
-    const setCurrentImageIndex = (index: number) => setIsCurrentImageIndex(index) // Alias for clarity
+    const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
     if (!project.images || project.images.length === 0) return null
 
-    const nextImage = () => setIsCurrentImageIndex((prev) => (prev + 1) % project.images.length)
-    const prevImage = () => setIsCurrentImageIndex((prev) => (prev - 1 + project.images.length) % project.images.length)
+    const nextImage = () => setCurrentImageIndex((prev) => (prev + 1) % project.images.length)
+    const prevImage = () => setCurrentImageIndex((prev) => (prev - 1 + project.images.length) % project.images.length)
 
     return (
       <div className="mb-6">
@@ -1504,27 +1519,27 @@ export default function RoboticPortfolio() {
                       <div className="p-4 bg-purple-300 rounded-full border-4 border-black">
                         <GraduationCap className="w-8 h-8 text-black" />
                       </div>
-                      <CardTitle className="text-2xl text-black manga-title">{education.degree}</CardTitle>
+                      <CardTitle className="text-2xl text-black manga-title">{educationData.degree}</CardTitle>
                     </div>
                     <CardDescription className="text-black text-lg font-bold">
                       <div className="flex items-center space-x-2 mb-2">
                         <Building className="w-5 h-5 text-black" />
-                        <span>{education.university}</span>
+                        <span>{educationData.university}</span>
                       </div>
                       <div className="flex items-center space-x-2 mb-2">
                         <Calendar className="w-5 h-5 text-black" />
-                        <span>{education.duration}</span>
+                        <span>{educationData.duration}</span>
                       </div>
                       <div className="flex items-center space-x-2">
                         <Star className="w-5 h-5 text-black" />
-                        <span>GPA: {education.gpa}</span>
+                        <span>GPA: {educationData.gpa}</span>
                       </div>
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <h4 className="text-xl font-bold text-black mb-4 manga-text">POWER HIGHLIGHTS:</h4>
                     <ul className="list-none text-black space-y-3">
-                      {education.highlights.map((item, i) => (
+                      {educationData.highlights.map((item, i) => (
                         <li key={i} className="flex items-start">
                           <span className="mr-3 text-2xl">🎯</span>
                           <span className="font-bold">{item}</span>
