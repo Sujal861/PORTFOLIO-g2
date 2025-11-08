@@ -626,6 +626,20 @@ export default function RoboticPortfolio() {
       color: "from-teal-400 to-green-600",
       image: "/images/certificates/tcs-career-edge-certificate.png",
     },
+    // MyEquation certificate
+    {
+      name: "Robo-AI: A 45 Days Industrial Training Program",
+      organization: "MyEquation Education",
+      date: "Oct 2025",
+      level: "Professional",
+      category: "Robotics",
+      icon: <Brain className="w-6 h-6" />,
+      description:
+        "Certificate of Participation for completing the Robo-AI industrial training program on robotics automation and software simulation with AI.",
+      color: "from-green-400 to-teal-600",
+      image: "/images/certificates/myequation-certificate.png",
+      link: "https://learn.myequation.in/verify/891096",
+    },
   ]
 
   const certificationCategories = [
@@ -1030,24 +1044,21 @@ export default function RoboticPortfolio() {
                 aria-label="Go to home"
                 className="inline-flex items-center gap-3 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-black group"
               >
-                {/* Animated robot icon with border */}
                 <div className="relative">
-                  <div className="absolute inset-0 bg-black rounded-lg opacity-0 group-hover:opacity-10 transition-opacity" />
-                  <Robot className="w-9 h-9 text-black group-hover:scale-110 transition-transform" />
+                  <div className="absolute inset-0 bg-black rounded-lg opacity-0 group-hover:opacity-20 transition-all duration-300 scale-110" />
+                  <div className="absolute inset-0 bg-red-500 rounded-lg opacity-0 group-hover:opacity-30 transition-all duration-300 scale-105 blur-sm" />
+                  <Robot className="w-9 h-9 text-black group-hover:scale-125 transition-transform duration-300 group-hover:animate-glitch relative z-10" />
                 </div>
 
-                {/* Brand text with unique styling */}
-                <div className="flex flex-col leading-tight">
-                  <span className="text-xs font-bold tracking-widest text-gray-600 uppercase">Engineer</span>
-                  <span className="text-xl font-black manga-title tracking-wider text-black drop-shadow-[2px_2px_0_rgba(0,0,0,0.1)]">
-                    SUJAL.GUPTA.B
-                  </span>
-                </div>
-
-                {/* Decorative accent */}
-                <div className="hidden sm:flex items-center gap-1 ml-2 pl-2 border-l-3 border-black">
-                  <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
-                  <span className="text-xs font-bold text-black">ACTIVE</span>
+                <div className="flex flex-col leading-tight relative">
+                  <div className="relative overflow-hidden py-0.5">
+                    <span className="text-xl font-black manga-title tracking-[0.12em] text-black drop-shadow-[3px_3px_0_rgba(239,68,68,0.3)] relative inline-block group-hover:drop-shadow-[4px_4px_0_rgba(239,68,68,0.6)] transition-all duration-300">
+                      SUJAL
+                    </span>
+                    <span className="text-xl font-black manga-title tracking-[0.12em] text-black drop-shadow-[3px_3px_0_rgba(239,68,68,0.3)] relative inline-block group-hover:drop-shadow-[4px_4px_0_rgba(239,68,68,0.6)] transition-all duration-300">
+                      .GUPTA.B
+                    </span>
+                  </div>
                 </div>
               </button>
 

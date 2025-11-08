@@ -364,6 +364,53 @@ html {
   font-weight: 700;
 }
 
+/* Enhanced navbar brand styling with unique effects */
+.navbar-brand-glow {
+  position: relative;
+}
+
+.navbar-brand-glow::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0), rgba(239, 68, 68, 0.2), rgba(239, 68, 68, 0));
+  border-radius: 0.5rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: -1;
+}
+
+@keyframes nameShift {
+  0%,
+  100% {
+    text-shadow: 3px 3px 0px rgba(239, 68, 68, 0.3);
+    letter-spacing: 0.12em;
+  }
+  50% {
+    text-shadow: 4px 4px 0px rgba(239, 68, 68, 0.6);
+    letter-spacing: 0.13em;
+  }
+}
+
+.navbar-brand-name {
+  animation: nameShift 3s ease-in-out infinite;
+}
+
+@keyframes iconPulse {
+  0%,
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.05) rotate(2deg);
+  }
+}
+
+.navbar-icon-pulse:hover {
+  animation: iconPulse 0.5s ease-in-out;
+}
+
 /* Added comprehensive mobile responsiveness */
 
 /* Tablet and mobile responsive font sizing for Jersey 15 */
