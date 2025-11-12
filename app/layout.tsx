@@ -1,13 +1,13 @@
 import type React from "react"
 import type { Metadata, Viewport } from "next"
-import { Inter, Jersey_25 } from "next/font/google"
+import { Inter, Jersey_10 as Jersey } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Analytics } from "@vercel/analytics/next"
 import { Suspense } from "react"
 
 const inter = Inter({ subsets: ["latin"] })
-const jersey25 = Jersey_25({
+const jersey = Jersey({
   weight: "400",
   subsets: ["latin"],
   display: "swap",
@@ -80,7 +80,7 @@ export default function RootLayout({
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
-      <body className={`${inter.className} ${jersey25.variable}`}>
+      <body className={`${inter.className} ${jersey.variable}`}>
         <Suspense fallback={null}>
           <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
             {children}
