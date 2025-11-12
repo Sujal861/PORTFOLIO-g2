@@ -1,18 +1,12 @@
 import type React from "react"
 import type { Metadata, Viewport } from "next"
-import { Inter, Jersey_10 as Jersey } from "next/font/google"
+import { Inter } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Analytics } from "@vercel/analytics/next"
 import { Suspense } from "react"
 
 const inter = Inter({ subsets: ["latin"] })
-const jersey = Jersey({
-  weight: "400",
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-jersey",
-})
 
 export const metadata: Metadata = {
   title: "Sujal Gupta - Robotics & AI Engineer",
@@ -80,7 +74,7 @@ export default function RootLayout({
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
-      <body className={`${inter.className} ${jersey.variable}`}>
+      <body className={inter.className}>
         <Suspense fallback={null}>
           <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
             {children}
