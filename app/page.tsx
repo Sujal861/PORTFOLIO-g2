@@ -4,71 +4,73 @@ import type React from "react"
 
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Badge } from "@/components/ui/badge"
 import Image from "next/image"
 import {
-  Bot as Robot,
-  Code,
-  Cpu,
+  ChevronDown,
+  Download,
+  MapPin,
+  Award,
+  Building,
+  Calendar,
+  GraduationCap,
+  Star,
   Zap,
+  ExternalLink,
+  Github,
   Mail,
   Phone,
-  MapPin,
-  Github,
-  Linkedin,
-  ExternalLink,
-  ChevronDown,
+  Send,
   Menu,
   X,
-  Send,
-  Download,
-  Eye,
-  Wrench,
-  Brain,
-  Monitor,
-  Users,
-  Award,
-  Calendar,
-  Building,
-  CheckCircle,
-  Star,
-  Trophy,
-  GraduationCap,
-  Settings,
+  Bot as Robot,
   BookOpen,
-  Target,
+  Settings,
   Cog,
-  Database,
+  Target,
+  Eye,
   Wifi,
   Layers,
+  Cpu,
+  Database,
+  Brain,
+  Users,
+  CheckCircle,
   ZoomIn,
+  Linkedin,
   ChevronLeft,
   ChevronRight,
-  Shield,
-  PlayCircle,
   Film,
+  PlayCircle,
+  Code,
+  Shield,
+  Monitor,
+  Wrench,
+  Trophy,
   ShoppingCart,
 } from "lucide-react"
-import { useToast } from "@/hooks/use-toast"
-import { ThemeToggle } from "@/components/theme-toggle"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { ThemeToggle } from "@/components/theme-toggle"
+import { useToast } from "@/components/ui/use-toast"
 
 // Use the new resume PDF by default
 const RESUME_PATH = "/resume/Sujal_Gupta_Resume.pdf"
 
 export default function RoboticPortfolio() {
+  // Moved all state hooks inside the component
   const [isLoading, setIsLoading] = useState(true)
+  const [scrolled, setScrolled] = useState(false)
   const [activeSection, setActiveSection] = useState("hero")
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  // const [selectedCategory, setSelectedCategory] = useState("All") // Redundant state, removed
   const [isDownloading, setIsDownloading] = useState(false)
   const [downloadProgress, setDownloadProgress] = useState(0)
   const [resumeReady, setResumeReady] = useState<boolean | null>(null)
-  const [scrolled, setScrolled] = useState(false)
   const { toast } = useToast()
 
   useEffect(() => {
@@ -77,11 +79,14 @@ export default function RoboticPortfolio() {
   }, [])
 
   //Navbar scrolled state
+  // Modify existing useEffect to use new scroll state logic
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 4)
-    onScroll()
-    window.addEventListener("scroll", onScroll)
-    return () => window.removeEventListener("scroll", onScroll)
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 4)
+    }
+    handleScroll()
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
   // Prevent body scroll when mobile menu open
@@ -95,20 +100,18 @@ export default function RoboticPortfolio() {
   }, [mobileMenuOpen])
 
   // Verify resume exists so buttons don't error
+  // Refactor checkPdf to a standalone function and update the useEffect
+  const checkResumeFile = async () => {
+    try {
+      const res = await fetch(RESUME_PATH, { method: "HEAD", cache: "no-store" })
+      setResumeReady(res.ok)
+    } catch {
+      setResumeReady(false)
+    }
+  }
+
   useEffect(() => {
-    let cancelled = false
-    async function checkPdf() {
-      try {
-        const res = await fetch(RESUME_PATH, { method: "HEAD", cache: "no-store" })
-        if (!cancelled) setResumeReady(res.ok)
-      } catch {
-        if (!cancelled) setResumeReady(false)
-      }
-    }
-    checkPdf()
-    return () => {
-      cancelled = true
-    }
+    checkResumeFile()
   }, [])
 
   useEffect(() => {
@@ -213,6 +216,7 @@ export default function RoboticPortfolio() {
     }
   }
 
+  // Moved all data arrays and component definitions inside the main component function
   const experiences = [
     {
       title: "Vice Secretary",
@@ -241,26 +245,13 @@ export default function RoboticPortfolio() {
       color: "from-green-400 to-blue-600",
       mangaEffect: "ROBOT MASTERY!",
     },
-    {
-      title: "Robotics Project Lead",
-      company: "Bangalore Technological Institute",
-      duration: "Dec 2023",
-      location: "Bangalore",
-      description: [
-        "Led a team to design and build the R C Robot (Kalabhairav), integrating electronic components.",
-        "Presented project outcomes at university technical symposiums.",
-      ],
-      icon: <Trophy className="w-6 h-6" />,
-      color: "from-yellow-400 to-orange-600",
-      mangaEffect: "VICTORY!",
-    },
   ]
 
   const education = {
     degree: "Bachelor of Engineering in Robotics & AI",
     university: "Bangalore Technological Institute",
     duration: "2022 - 2026 (Expected)",
-    gpa: "9.0/10.0",
+    gpa: "8.64/10.0", // Updated GPA from 9.0 to 8.64
     highlights: [
       "Specialized in autonomous systems, machine learning, and intelligent robotics.",
       "Relevant coursework: Advanced Robotics, AI Algorithms, Computer Vision, Embedded Systems.",
@@ -464,6 +455,19 @@ export default function RoboticPortfolio() {
     },
   ]
 
+  const educationData = {
+    // Renamed to avoid conflict with id="education"
+    degree: "Bachelor of Engineering in Robotics & AI",
+    university: "Bangalore Technological Institute",
+    duration: "2022 - 2026 (Expected)",
+    gpa: "8.64/10.0", // Updated GPA from 9.0 to 8.64
+    highlights: [
+      "Specialized in autonomous systems, machine learning, and intelligent robotics.",
+      "Relevant coursework: Advanced Robotics, AI Algorithms, Computer Vision, Embedded Systems.",
+      "Actively participated in robotics club and inter-university hackathons.",
+    ],
+  }
+
   const skills = [
     { name: "Python", level: 90, icon: <Code className="w-5 h-5" />, color: "from-yellow-400 to-green-500" },
     { name: "C++", level: 85, icon: <Code className="w-5 h-5" />, color: "from-blue-400 to-purple-500" },
@@ -637,6 +641,20 @@ export default function RoboticPortfolio() {
       color: "from-teal-400 to-green-600",
       image: "/images/certificates/tcs-career-edge-certificate.png",
     },
+    // MyEquation certificate
+    {
+      name: "Robo-AI: A 45 Days Industrial Training Program",
+      organization: "MyEquation Education",
+      date: "Oct 2025",
+      level: "Professional",
+      category: "Robotics",
+      icon: <Brain className="w-6 h-6" />,
+      description:
+        "Certificate of Participation for completing the Robo-AI industrial training program on robotics automation and software simulation with AI.",
+      color: "from-green-400 to-teal-600",
+      image: "/images/certificates/myequation-certificate.png",
+      link: "https://learn.myequation.in/verify/891096",
+    },
   ]
 
   const certificationCategories = [
@@ -651,6 +669,7 @@ export default function RoboticPortfolio() {
     "App Development",
   ]
 
+  // Use the updated state variable
   const [selectedCategory, setSelectedCategory] = useState("All")
 
   const filteredCertifications =
@@ -658,13 +677,12 @@ export default function RoboticPortfolio() {
 
   // Project Image Gallery Component
   const ProjectImageGallery = ({ project }: { project: any }) => {
-    const [currentImageIndex, setIsCurrentImageIndex] = useState(0) // Corrected state update function name
-    const setCurrentImageIndex = (index: number) => setIsCurrentImageIndex(index) // Alias for clarity
+    const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
     if (!project.images || project.images.length === 0) return null
 
-    const nextImage = () => setIsCurrentImageIndex((prev) => (prev + 1) % project.images.length)
-    const prevImage = () => setIsCurrentImageIndex((prev) => (prev - 1 + project.images.length) % project.images.length)
+    const nextImage = () => setCurrentImageIndex((prev) => (prev + 1) % project.images.length)
+    const prevImage = () => setCurrentImageIndex((prev) => (prev - 1 + project.images.length) % project.images.length)
 
     return (
       <div className="mb-6">
@@ -1023,37 +1041,54 @@ export default function RoboticPortfolio() {
         initial={{ y: -8, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ type: "spring", stiffness: 260, damping: 24 }}
-        className={`fixed top-0 left-0 right-0 z-50 border-b-4 border-black transition-colors ${
-          scrolled ? "bg-white/95 shadow-[6px_6px_0_#000] supports-[backdrop-filter]:backdrop-blur-sm" : "bg-white/85"
+        className={`fixed top-0 left-0 right-0 z-50 border-b-4 border-black transition-all ${
+          scrolled
+            ? "bg-gradient-to-r from-amber-100 to-amber-50 shadow-[8px_8px_0_#000] supports-[backdrop-filter]:backdrop-blur-sm"
+            : "bg-gradient-to-r from-amber-100 to-transparent"
         }`}
       >
         <div className="relative">
           {/* Manga halftone overlay */}
-          <div className="absolute inset-0 pointer-events-none opacity-10 manga-halftone" aria-hidden="true" />
+          <div className="absolute inset-0 pointer-events-none opacity-5 manga-halftone" aria-hidden="true" />
+
           <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 relative">
-            <div className="flex justify-between items-center h-16">
-              {/* Brand */}
+            <div className="flex justify-between items-center h-20">
+              {/* Brand - More Prominent */}
               <button
                 onClick={() => scrollToSection("hero")}
                 aria-label="Go to home"
-                className="inline-flex items-center gap-2 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-black"
+                className="inline-flex items-center gap-3 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-black group"
               >
-                <Robot className="w-7 h-7 text-black" />
-                <span className="text-lg font-bold manga-title tracking-tight text-black">SUJAL.GUPTA</span>
+                <div className="relative">
+                  <div className="absolute inset-0 bg-black rounded-lg opacity-0 group-hover:opacity-20 transition-all duration-300 scale-110" />
+                  <div className="absolute inset-0 bg-red-500 rounded-lg opacity-0 group-hover:opacity-30 transition-all duration-300 scale-105 blur-sm" />
+                  <Robot className="w-9 h-9 text-black group-hover:scale-125 transition-transform duration-300 group-hover:animate-glitch relative z-10" />
+                </div>
+
+                <div className="flex flex-col leading-tight relative">
+                  <div className="relative overflow-hidden py-0.5">
+                    <span className="text-xl font-black manga-title tracking-[0.12em] text-black drop-shadow-[3px_3px_0_rgba(239,68,68,0.3)] relative inline-block group-hover:drop-shadow-[4px_4px_0_rgba(239,68,68,0.6)] transition-all duration-300">
+                      SUJAL
+                    </span>
+                    <span className="text-xl font-black manga-title tracking-[0.12em] text-black drop-shadow-[3px_3px_0_rgba(239,68,68,0.3)] relative inline-block group-hover:drop-shadow-[4px_4px_0_rgba(239,68,68,0.6)] transition-all duration-300">
+                      .GUPTA.B
+                    </span>
+                  </div>
+                </div>
               </button>
 
               {/* Desktop links */}
-              <div className="hidden md:flex items-center gap-3">
+              <div className="hidden md:flex items-center gap-2">
                 {["hero", "about", "experience", "education", "projects", "skills", "certifications", "contact"].map(
                   (section) => (
                     <button
                       key={section}
                       onClick={() => scrollToSection(section)}
                       aria-current={activeSection === section ? "page" : undefined}
-                      className={`relative px-3 py-2 text-sm manga-text rounded-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-black ${
+                      className={`relative px-3 py-2 text-xs font-bold manga-text rounded-sm transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-black ${
                         activeSection === section
-                          ? "text-black font-extrabold bg-amber-300 border-2 border-black rounded shadow-[3px_3px_0_#000]"
-                          : "text-gray-700 hover:text-black"
+                          ? "text-black bg-red-400 border-2 border-black rounded shadow-[3px_3px_0_#000] scale-105"
+                          : "text-gray-700 hover:text-black hover:bg-amber-200 border-2 border-transparent hover:border-black"
                       }`}
                     >
                       {section === "hero" ? "HOME" : section.toUpperCase()}
@@ -1063,7 +1098,7 @@ export default function RoboticPortfolio() {
               </div>
 
               {/* Desktop actions */}
-              <div className="hidden md:flex items-center gap-2">
+              <div className="hidden md:flex items-center gap-3">
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
@@ -1072,17 +1107,21 @@ export default function RoboticPortfolio() {
                         size="icon"
                         onClick={handleDownloadResume}
                         disabled={isDownloading || resumeReady === false}
-                        className="h-10 w-10 text-black bg-amber-200 hover:bg-amber-300 border-2 border-black rounded-md shadow-[3px_3px_0_#000]"
+                        className="h-11 w-11 text-black bg-red-500 hover:bg-red-600 border-3 border-black rounded-lg shadow-[4px_4px_0_#000] font-bold transition-all hover:scale-110"
                         aria-label="Download resume"
                       >
-                        <Download className="h-4 w-4" />
+                        <Download className="h-5 w-5" />
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent>Download resume</TooltipContent>
                   </Tooltip>
                   <span
-                    className={`ml-1 inline-flex items-center justify-center h-3 w-3 rounded-full border-2 border-black ${
-                      resumeReady === true ? "bg-emerald-400" : resumeReady === false ? "bg-red-400" : "bg-amber-300"
+                    className={`ml-1 inline-flex items-center justify-center h-4 w-4 rounded-full border-2 border-black font-bold text-xs ${
+                      resumeReady === true
+                        ? "bg-emerald-400"
+                        : resumeReady === false
+                          ? "bg-red-500"
+                          : "bg-amber-300 animate-pulse"
                     }`}
                     aria-live="polite"
                   >
@@ -1090,25 +1129,25 @@ export default function RoboticPortfolio() {
                       {resumeReady === true ? "PDF ready" : resumeReady === false ? "PDF missing" : "Checking PDF"}
                     </span>
                   </span>
-                  <div className="ml-1 border-2 border-black rounded-md shadow-[3px_3px_0_#000] overflow-hidden">
+                  <div className="ml-1 border-3 border-black rounded-lg shadow-[3px_3px_0_#000] overflow-hidden bg-white">
                     <ThemeToggle />
                   </div>
                 </TooltipProvider>
               </div>
 
               {/* Mobile actions */}
-              <div className="flex items-center gap-1 md:hidden">
-                <div className="border-2 border-black rounded-md shadow-[3px_3px_0_#000] overflow-hidden">
+              <div className="flex items-center gap-2 md:hidden">
+                <div className="border-2 border-black rounded-md shadow-[2px_2px_0_#000] overflow-hidden bg-white">
                   <ThemeToggle />
                 </div>
                 <button
-                  className="ml-2 p-2 rounded border-2 border-black bg-white shadow-[3px_3px_0_#000] focus:outline-none focus-visible:ring-2 focus-visible:ring-black text-black"
+                  className="p-2 rounded border-2 border-black bg-red-500 hover:bg-red-600 text-white shadow-[3px_3px_0_#000] focus:outline-none focus-visible:ring-2 focus-visible:ring-black font-bold transition-all"
                   onClick={() => setMobileMenuOpen((v) => !v)}
                   aria-label="Toggle menu"
                   aria-expanded={mobileMenuOpen}
                   aria-controls="mobile-nav"
                 >
-                  {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                  {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
                 </button>
               </div>
             </div>
@@ -1123,7 +1162,7 @@ export default function RoboticPortfolio() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="md:hidden bg-white border-t-4 border-black shadow-[6px_6px_0_#000]"
+              className="md:hidden bg-gradient-to-b from-amber-100 to-amber-50 border-t-4 border-black shadow-[6px_6px_0_#000]"
             >
               <div className="px-3 py-3 space-y-2">
                 {["hero", "about", "experience", "education", "projects", "skills", "certifications", "contact"].map(
@@ -1132,10 +1171,10 @@ export default function RoboticPortfolio() {
                       key={section}
                       onClick={() => scrollToSection(section)}
                       aria-current={activeSection === section ? "page" : undefined}
-                      className={`block w-full text-left rounded px-3 py-2 text-sm manga-text border-2 border-black transition-colors ${
+                      className={`block w-full text-left rounded px-3 py-2 text-sm manga-text border-2 border-black transition-all font-bold ${
                         activeSection === section
-                          ? "bg-amber-200 text-black"
-                          : "bg-white text-gray-800 hover:bg-gray-100"
+                          ? "bg-red-400 text-black shadow-[3px_3px_0_#000]"
+                          : "bg-white text-gray-800 hover:bg-amber-200 hover:border-black"
                       }`}
                     >
                       {section === "hero" ? "HOME" : section.toUpperCase()}
@@ -1147,17 +1186,21 @@ export default function RoboticPortfolio() {
                   <Button
                     onClick={handleDownloadResume}
                     disabled={isDownloading || resumeReady === false}
-                    className="w-full h-10 bg-red-500 text-white hover:bg-red-600 text-xs border-2 border-black shadow-[3px_3px_0_#000]"
+                    className="w-full h-11 bg-red-500 text-white hover:bg-red-600 text-xs border-2 border-black shadow-[3px_3px_0_#000] font-bold"
                     size="sm"
                   >
                     {isDownloading ? "DOWNLOADING..." : "DOWNLOAD RESUME"}
                   </Button>
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 p-2 bg-white border-2 border-black rounded">
                   <span
-                    className={`inline-flex h-3 w-3 rounded-full border-2 border-black ${
-                      resumeReady === true ? "bg-emerald-400" : resumeReady === false ? "bg-red-400" : "bg-amber-300"
+                    className={`inline-flex h-3 w-3 rounded-full border-2 border-black font-bold ${
+                      resumeReady === true
+                        ? "bg-emerald-400"
+                        : resumeReady === false
+                          ? "bg-red-500"
+                          : "bg-amber-300 animate-pulse"
                     }`}
                     aria-live="polite"
                   >
@@ -1165,7 +1208,7 @@ export default function RoboticPortfolio() {
                       {resumeReady === true ? "PDF ready" : resumeReady === false ? "PDF missing" : "Checking PDF"}
                     </span>
                   </span>
-                  <span className="text-xs manga-text text-black">
+                  <span className="text-xs manga-text text-black font-bold">
                     {resumeReady === true ? "PDF READY" : resumeReady === false ? "PDF MISSING" : "CHECKING..."}
                   </span>
                 </div>
@@ -1194,7 +1237,7 @@ export default function RoboticPortfolio() {
                 >
                   <MangaActionEffect effect="HERO APPEARS!" className="top-0 right-0" />
                   <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold mb-6 manga-title text-black leading-tight">
-                    SUJAL GUPTA
+                    SUJAL GUPTA B
                   </h1>
                   <motion.div
                     initial={{ opacity: 0 }}
@@ -1476,27 +1519,27 @@ export default function RoboticPortfolio() {
                       <div className="p-4 bg-purple-300 rounded-full border-4 border-black">
                         <GraduationCap className="w-8 h-8 text-black" />
                       </div>
-                      <CardTitle className="text-2xl text-black manga-title">{education.degree}</CardTitle>
+                      <CardTitle className="text-2xl text-black manga-title">{educationData.degree}</CardTitle>
                     </div>
                     <CardDescription className="text-black text-lg font-bold">
                       <div className="flex items-center space-x-2 mb-2">
                         <Building className="w-5 h-5 text-black" />
-                        <span>{education.university}</span>
+                        <span>{educationData.university}</span>
                       </div>
                       <div className="flex items-center space-x-2 mb-2">
                         <Calendar className="w-5 h-5 text-black" />
-                        <span>{education.duration}</span>
+                        <span>{educationData.duration}</span>
                       </div>
                       <div className="flex items-center space-x-2">
                         <Star className="w-5 h-5 text-black" />
-                        <span>GPA: {education.gpa}</span>
+                        <span>GPA: {educationData.gpa}</span>
                       </div>
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <h4 className="text-xl font-bold text-black mb-4 manga-text">POWER HIGHLIGHTS:</h4>
                     <ul className="list-none text-black space-y-3">
-                      {education.highlights.map((item, i) => (
+                      {educationData.highlights.map((item, i) => (
                         <li key={i} className="flex items-start">
                           <span className="mr-3 text-2xl">🎯</span>
                           <span className="font-bold">{item}</span>

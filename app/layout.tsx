@@ -9,6 +9,7 @@ import { Suspense } from "react"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://portfolio-g2-sujal.vercel.app"),
   title: "Sujal Gupta - Robotics & AI Engineer",
   description:
     "Portfolio of Sujal Gupta, an innovative Robotics and AI engineering student specializing in autonomous systems, machine learning, and intelligent robotics.",
@@ -19,7 +20,7 @@ export const metadata: Metadata = {
     title: "Sujal Gupta - Robotics & AI Engineer",
     description:
       "Innovative Robotics and AI engineering student with expertise in autonomous systems and machine learning",
-    url: "https://sujalgupta.vercel.app",
+    url: "https://portfolio-g2-sujal.vercel.app",
     siteName: "Sujal Gupta Portfolio",
     images: [
       {
