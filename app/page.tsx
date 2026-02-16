@@ -1340,7 +1340,7 @@ export default function RoboticPortfolio() {
         </section>
 
   {/* About Section */}
-> <section id="about" className="py-12 sm:py-16 md:py-20 bg-yellow-100 relative scroll-mt-24">
+  <section id="about" className="py-12 sm:py-16 md:py-20 bg-yellow-100 relative scroll-mt-24">
   <div className="absolute inset-0 manga-action-line opacity-20" />
   <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 relative z-10">
             <motion.div
