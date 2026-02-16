@@ -871,7 +871,7 @@ export default function RoboticPortfolio() {
                     </DialogTrigger>
                     <DialogContent className="max-w-5xl w-[95vw] p-0 bg-white border-8 border-black">
                       <div className="p-4 border-b-4 border-black bg-yellow-300">
-                        <h3 className="text-2xl font-bold manga-title text-black">{project.title}</h3>
+        <h3 className="text-lg sm:text-xl md:text-2xl font-bold manga-title text-black">{project.title}</h3>
                         {video.caption ? <p className="text-black font-bold">{video.caption}</p> : null}
                       </div>
                       <div className="p-4">
@@ -1113,7 +1113,7 @@ export default function RoboticPortfolio() {
                       key={section}
                       onClick={() => scrollToSection(section)}
                       aria-current={activeSection === section ? "page" : undefined}
-                      className={`relative px-3 py-2 text-xs font-bold manga-text rounded-sm transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-black ${
+                      className={`relative px-3 py-2 sm:px-4 sm:py-3 min-h-11 text-xs sm:text-sm font-bold manga-text rounded-sm transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-black ${
                         activeSection === section
                           ? "text-black bg-red-400 border-2 border-black rounded shadow-[3px_3px_0_#000] scale-105"
                           : "text-gray-700 hover:text-black hover:bg-amber-200 border-2 border-transparent hover:border-black"
@@ -1199,7 +1199,7 @@ export default function RoboticPortfolio() {
                       key={section}
                       onClick={() => scrollToSection(section)}
                       aria-current={activeSection === section ? "page" : undefined}
-                      className={`block w-full text-left rounded px-3 py-2 text-sm manga-text border-2 border-black transition-all font-bold ${
+                      className={`block w-full text-left rounded px-3 py-2 sm:px-4 sm:py-3 min-h-11 text-sm manga-text border-2 border-black transition-all font-bold ${
                         activeSection === section
                           ? "bg-red-400 text-black shadow-[3px_3px_0_#000]"
                           : "bg-white text-gray-800 hover:bg-amber-200 hover:border-black"
@@ -1251,12 +1251,11 @@ export default function RoboticPortfolio() {
         {/* Hero Section */}
         <section
           id="hero"
-          className="min-h-screen flex items-center justify-center relative overflow-hidden manga-speed-lines pt-24 scroll-mt-24"
+          className="min-h-[85vh] sm:min-h-screen flex items-center justify-center relative overflow-hidden manga-speed-lines pt-16 sm:pt-24 scroll-mt-24"
         >
-          <div className="absolute inset-0 manga-halftone opacity-10" />
-          <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="min-h-screen flex items-center justify-center py-24">
-              <div className="grid lg:grid-cols-2 gap-12 items-center justify-items-center w-full">
+          <div className="relative z-10 w-full max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
+            <div className="flex items-center justify-center py-12 sm:py-20 md:py-24">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 md:gap-12 items-center justify-items-center w-full">
                 <motion.div
                   initial={{ opacity: 0, x: -50 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -1340,10 +1339,10 @@ export default function RoboticPortfolio() {
           </motion.div>
         </section>
 
-        {/* About Section */}
-        <section id="about" className="py-20 bg-yellow-100 relative scroll-mt-24">
-          <div className="absolute inset-0 manga-action-line opacity-20" />
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+  {/* About Section */}
+> <section id="about" className="py-12 sm:py-16 md:py-20 bg-yellow-100 relative scroll-mt-24">
+  <div className="absolute inset-0 manga-action-line opacity-20" />
+  <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 relative z-10">
             <motion.div
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -1351,11 +1350,11 @@ export default function RoboticPortfolio() {
               viewport={{ once: true }}
               className="text-center mb-16"
             >
-              <h2 className="text-6xl md:text-7xl font-bold mb-6 manga-title text-black">ABOUT THE HERO</h2>
+              <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-4 sm:mb-6 manga-title text-black">ABOUT THE HERO</h2>
               <div className="w-32 h-2 bg-black mx-auto" />
             </motion.div>
 
-            <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 md:gap-12 items-center">
               <motion.div
                 initial={{ opacity: 0, x: -50 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -1392,7 +1391,7 @@ export default function RoboticPortfolio() {
                   </p>
                 </MangaPanel>
 
-                <div className="grid grid-cols-2 gap-4 mt-8">
+                <div className="grid grid-cols-2 gap-3 sm:gap-4 mt-6 sm:mt-8">
                   <motion.div whileHover={{ scale: 1.05 }} className="bg-blue-200 p-4 rounded-lg border-4 border-black">
                     <MapPin className="w-8 h-8 text-black mb-2" />
                     <p className="text-sm text-black font-bold">LOCATION</p>
@@ -1435,9 +1434,9 @@ export default function RoboticPortfolio() {
         </section>
 
         {/* Experience Section */}
-        <section id="experience" className="py-20 bg-red-100 relative scroll-mt-24">
+        <section id="experience" className="py-12 sm:py-16 md:py-20 bg-red-100 relative scroll-mt-24">
           <div className="absolute inset-0 manga-halftone opacity-10" />
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 relative z-10">
             <motion.div
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -1445,12 +1444,12 @@ export default function RoboticPortfolio() {
               viewport={{ once: true }}
               className="text-center mb-16"
             >
-              <h2 className="text-6xl md:text-7xl font-bold mb-6 manga-title text-black">BATTLE EXPERIENCE</h2>
+              <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-4 sm:mb-6 manga-title text-black">BATTLE EXPERIENCE</h2>
               <div className="w-32 h-2 bg-black mx-auto mb-6" />
               <MangaSpeechBubble text="My journey through the tech world!" className="inline-block" />
             </motion.div>
 
-            <div className="grid gap-8 md:grid-cols-1 lg:grid-cols-1">
+            <div className="grid gap-4 sm:gap-6 md:gap-8 grid-cols-1">
               {experiences.map((exp, index) => (
                 <motion.div
                   key={index}
@@ -1504,9 +1503,9 @@ export default function RoboticPortfolio() {
         </section>
 
         {/* Education Section */}
-        <section id="education" className="py-20 bg-blue-100 relative scroll-mt-24">
+        <section id="education" className="py-12 sm:py-16 md:py-20 bg-blue-100 relative scroll-mt-24">
           <div className="absolute inset-0 manga-speed-lines opacity-20" />
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 relative z-10">
             <motion.div
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -1514,7 +1513,7 @@ export default function RoboticPortfolio() {
               viewport={{ once: true }}
               className="text-center mb-16"
             >
-              <h2 className="text-6xl md:text-7xl font-bold mb-6 manga-title text-black">TRAINING ARC</h2>
+              <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-4 sm:mb-6 manga-title text-black">TRAINING ARC</h2>
               <div className="w-32 h-2 bg-black mx-auto mb-6" />
               <MangaSpeechBubble text="Academic power-up journey!" className="inline-block" />
             </motion.div>
@@ -1524,7 +1523,7 @@ export default function RoboticPortfolio() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
-              className="grid md:grid-cols-2 gap-12 items-center"
+              className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 md:gap-12 items-center"
             >
               <div className="relative flex justify-center">
                 <MangaPanel className="bg-white">
@@ -1582,9 +1581,9 @@ export default function RoboticPortfolio() {
         </section>
 
         {/* Projects Section */}
-        <section id="projects" className="py-20 bg-green-100 relative scroll-mt-24">
+        <section id="projects" className="py-12 sm:py-16 md:py-20 bg-green-100 relative scroll-mt-24">
           <div className="absolute inset-0 manga-action-line opacity-20" />
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 relative z-10">
             <motion.div
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -1592,7 +1591,7 @@ export default function RoboticPortfolio() {
               viewport={{ once: true }}
               className="text-center mb-16"
             >
-              <h2 className="text-6xl md:text-7xl font-bold mb-6 manga-title text-black">EPIC PROJECTS</h2>
+              <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-4 sm:mb-6 manga-title text-black">EPIC PROJECTS</h2>
               <div className="w-32 h-2 bg-black mx-auto mb-6" />
               <MangaSpeechBubble text="My greatest creations!" className="inline-block" />
             </motion.div>
@@ -1686,9 +1685,9 @@ export default function RoboticPortfolio() {
         </section>
 
         {/* Skills Section */}
-        <section id="skills" className="py-20 bg-purple-100 relative scroll-mt-24">
+        <section id="skills" className="py-12 sm:py-16 md:py-20 bg-purple-100 relative scroll-mt-24">
           <div className="absolute inset-0 manga-halftone opacity-10" />
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 relative z-10">
             <motion.div
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -1696,7 +1695,7 @@ export default function RoboticPortfolio() {
               viewport={{ once: true }}
               className="text-center mb-16"
             >
-              <h2 className="text-6xl md:text-7xl font-bold mb-6 manga-title text-black">SPECIAL ABILITIES</h2>
+              <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-4 sm:mb-6 manga-title text-black">SPECIAL ABILITIES</h2>
               <div className="w-32 h-2 bg-black mx-auto mb-6" />
               <MangaSpeechBubble text="My technical superpowers!" className="inline-block" />
             </motion.div>
@@ -1759,7 +1758,7 @@ export default function RoboticPortfolio() {
               viewport={{ once: true }}
               className="mt-16 text-center"
             >
-              <h3 className="text-4xl font-bold text-black mb-8 manga-title">BONUS SKILLS</h3>
+              <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-black mb-6 sm:mb-8 manga-title">BONUS SKILLS</h3>
               <div className="flex flex-wrap justify-center gap-4">
                 {[
                   { name: "Machine Learning", icon: Brain },
@@ -1774,7 +1773,7 @@ export default function RoboticPortfolio() {
                   <motion.div
                     key={index}
                     whileHover={{ scale: 1.05, y: -2 }}
-                    className="bg-cyan-300 px-4 py-3 rounded-full border-4 border-black flex items-center space-x-2"
+                    className="bg-cyan-300 px-4 sm:px-6 py-3 sm:py-4 min-h-11 rounded-full border-4 border-black flex items-center space-x-2"
                   >
                     <expertise.icon className="w-5 h-5 text-black" />
                     <span className="text-black font-bold manga-text">{expertise.name}</span>
@@ -1803,9 +1802,9 @@ export default function RoboticPortfolio() {
         </section>
 
         {/* Certifications Section */}
-        <section id="certifications" className="py-20 bg-orange-100 relative scroll-mt-24">
+        <section id="certifications" className="py-12 sm:py-16 md:py-20 bg-orange-100 relative scroll-mt-24">
           <div className="absolute inset-0 manga-speed-lines opacity-20" />
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 relative z-10">
             <motion.div
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -1813,7 +1812,7 @@ export default function RoboticPortfolio() {
               viewport={{ once: true }}
               className="text-center mb-16"
             >
-              <h2 className="text-6xl md:text-7xl font-bold mb-6 manga-title text-black">ACHIEVEMENT BADGES</h2>
+              <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-4 sm:mb-6 manga-title text-black">ACHIEVEMENT BADGES</h2>
               <div className="w-32 h-2 bg-black mx-auto mb-6" />
               <MangaSpeechBubble text="Collected power-ups and certifications!" className="inline-block" />
             </motion.div>
@@ -1831,7 +1830,7 @@ export default function RoboticPortfolio() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setSelectedCategory(category)}
-                  className={`px-4 py-2 rounded-full text-lg font-bold manga-text border-4 border-black transition-all duration-300 ${
+                  className={`px-4 sm:px-6 py-2 sm:py-3 min-h-11 rounded-full text-lg font-bold manga-text border-4 border-black transition-all duration-300 ${
                     selectedCategory === category
                       ? "bg-red-500 text-white shadow-lg"
                       : "bg-white text-black hover:bg-gray-200"
@@ -1927,7 +1926,7 @@ export default function RoboticPortfolio() {
                               <DialogContent className="max-w-7xl w-[95vw] h-[95vh] p-0 bg-white border-8 border-black">
                                 <div className="relative h-full flex flex-col">
                                   <div className="p-6 border-b-4 border-black bg-yellow-300 flex-shrink-0">
-                                    <h3 className="text-3xl font-bold manga-title text-black mb-2">{cert.name}</h3>
+      <h3 className="text-lg sm:text-2xl md:text-3xl font-bold manga-title text-black mb-2">{cert.name}</h3>
                                     <p className="text-black font-bold text-lg">
                                       {cert.organization} • {cert.date}
                                     </p>
@@ -1997,9 +1996,9 @@ export default function RoboticPortfolio() {
         </section>
 
         {/* Contact Section */}
-        <section id="contact" className="py-20 bg-pink-100 relative scroll-mt-24">
+        <section id="contact" className="py-12 sm:py-16 md:py-20 bg-pink-100 relative scroll-mt-24">
           <div className="absolute inset-0 manga-action-line opacity-20" />
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 relative z-10">
             <motion.div
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -2007,7 +2006,7 @@ export default function RoboticPortfolio() {
               viewport={{ once: true }}
               className="text-center mb-16"
             >
-              <h2 className="text-6xl md:text-7xl font-bold mb-6 manga-title text-black">CONTACT THE HERO</h2>
+              <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-4 sm:mb-6 manga-title text-black">CONTACT THE HERO</h2>
               <div className="w-32 h-2 bg-black mx-auto mb-6" />
               <MangaSpeechBubble text="Ready to team up? Let's connect!" className="inline-block" />
             </motion.div>
@@ -2023,7 +2022,7 @@ export default function RoboticPortfolio() {
               >
                 <MangaPanel className="bg-white relative">
                   <MangaActionEffect effect="CONTACT INFO!" className="top-4 right-4" />
-                  <h3 className="text-3xl font-bold text-black mb-6 manga-title">HERO DETAILS</h3>
+                  <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-black mb-4 sm:mb-6 manga-title">HERO DETAILS</h3>
                   <div className="space-y-6">
                     <motion.div
                       whileHover={{ x: 10, scale: 1.02 }}
