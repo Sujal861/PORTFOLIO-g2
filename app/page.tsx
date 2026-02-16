@@ -652,8 +652,8 @@ export default function RoboticPortfolio() {
       description:
         "Certificate of Participation for completing the Robo-AI industrial training program on robotics automation and software simulation with AI.",
       color: "from-green-400 to-teal-600",
-      image: "/images/certificates/myequation-certificate.png",
-      link: "https://learn.myequation.in/verify/891096",
+  image: "/images/certificates/myequation-robo-ai-appreciation.png",
+  link: "https://learn.myequation.in/verify/891096",
     },
   ]
 
