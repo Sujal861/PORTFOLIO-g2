@@ -219,9 +219,37 @@ export default function RoboticPortfolio() {
   // Moved all data arrays and component definitions inside the main component function
   const experiences = [
     {
+      title: "Student Intern",
+      company: "KodNest",
+      duration: "Feb 2026 – Present",
+      location: "Bangalore",
+      description: [
+        "Engaged in a 4-month Full Stack Development Internship with industry-aligned curriculum covering Frontend (React), Backend (Java/Python), and Database Management.",
+        "Learning REST APIs, system design fundamentals, and data structures while working on real-time projects.",
+        "Gaining practical exposure in software engineering best practices and preparing for IT development roles in top companies.",
+      ],
+      icon: <Code className="w-6 h-6" />,
+      color: "from-orange-400 to-red-600",
+      mangaEffect: "FULL STACK POWER!",
+    },
+    {
+      title: "Intern",
+      company: "Learners Byte",
+      duration: "Jan 2026 – Present",
+      location: "Hyderabad, Telangana",
+      description: [
+        "Participating in a 4-Month Virtual National AI Internship certified under NEAT 6.0, covering 15+ programming languages and Generative AI development.",
+        "Working on Agentic AI project development with access to 10+ real-world automation tools and Expertpedia AI Adaptive Learning.",
+        "Completing 3 micro-projects and 10 automation projects to earn the official Bharat Unnati AI Fellowship Certificate.",
+      ],
+      icon: <Brain className="w-6 h-6" />,
+      color: "from-purple-400 to-pink-600",
+      mangaEffect: "AI INNOVATION!",
+    },
+    {
       title: "Vice Secretary",
       company: "BTI Students' Club",
-      duration: "Dec 2024 – Present",
+      duration: "Dec 2024 – Jan 2026",
       location: "Bengaluru, Karnataka",
       description: [
         "Coordinated over 10+ student-driven technical and non-technical events, enhancing engagement and participation.",
@@ -234,8 +262,8 @@ export default function RoboticPortfolio() {
     {
       title: "Robotics Intern",
       company: "Kodacy",
-      duration: "Feb 2025 – Apr 2025",
-      location: "Remote",
+      duration: "Feb 2025 – Mar 2025",
+      location: "Bangalore",
       description: [
         "Assisted in developing and testing robotic algorithms for autonomous navigation and sensor integration.",
         "Contributed to simulation workflows using Python and ROS (Robot Operating System).",
