@@ -727,7 +727,7 @@ export default function RoboticPortfolio() {
 
     return (
       <div className="mb-6">
-        <div className="relative w-full h-48 rounded-lg overflow-hidden border-4 border-black bg-gray-100">
+        <div className="relative w-full h-40 sm:h-48 md:h-56 rounded-lg overflow-hidden border-4 border-black bg-gray-100">
           <Image
             src={project.images[currentImageIndex].src || "/placeholder.svg"}
             alt={project.images[currentImageIndex].alt}
@@ -787,14 +787,14 @@ export default function RoboticPortfolio() {
                 <ZoomIn className="w-4 h-4" />
               </motion.button>
             </DialogTrigger>
-            <DialogContent className="max-w-4xl w-full p-0 bg-white border-8 border-black">
+            <DialogContent className="max-w-2xl sm:max-w-4xl w-[95vw] sm:w-full p-0 bg-white border-8 border-black max-h-[90vh] overflow-y-auto">
               <div className="relative">
-                <div className="p-6 border-b-4 border-black bg-yellow-300">
+                <div className="p-3 sm:p-4 md:p-6 border-b-4 border-black bg-yellow-300">
                   <h3 className="text-2xl font-bold manga-title text-black">{project.title}</h3>
                   <p className="text-black font-bold">{project.images[currentImageIndex].caption}</p>
                 </div>
                 <div className="p-6">
-                  <div className="relative w-full h-96 mb-4">
+                  <div className="relative w-full h-48 sm:h-64 md:h-96 mb-3 sm:mb-4">
                     <Image
                       src={project.images[currentImageIndex].src || "/placeholder.svg"}
                       alt={project.images[currentImageIndex].alt}
@@ -829,7 +829,7 @@ export default function RoboticPortfolio() {
     }
 
     return (
-      <div className="mb-6 space-y-4">
+      <div className="mb-4 sm:mb-6 space-y-3 sm:space-y-4">
         <div className="flex items-center gap-2">
           <Film className="w-4 h-4 text-black" />
           <span className="text-sm font-bold manga-text text-black">DEMO CLIPS</span>
@@ -838,7 +838,7 @@ export default function RoboticPortfolio() {
         <div className="grid sm:grid-cols-2 gap-4">
           {project.videos.map((video: { src: string; type: string; caption?: string }, idx: number) => (
             <div key={video.src} className="relative">
-              <div className="relative w-full h-48 rounded-lg overflow-hidden border-4 border-black bg-gray-100">
+              <div className="relative w-full h-40 sm:h-48 md:h-56 rounded-lg overflow-hidden border-4 border-black bg-gray-100">
                 {errorIndexes[idx] ? (
                   <div className="absolute inset-0 flex flex-col items-center justify-center bg-white p-4 text-center">
                     <p className="text-black font-bold mb-3">Video unavailable here. Watch on LinkedIn instead.</p>
@@ -933,7 +933,7 @@ export default function RoboticPortfolio() {
               <Badge className="bg-blue-300 text-black border-2 border-black manga-text font-bold">{cert.level}</Badge>
             </div>
           </div>
-          <div className="p-6 flex-1 flex flex-col">
+          <div className="p-3 sm:p-4 md:p-6 flex-1 flex flex-col">
             <div className="relative w-full flex-1 mb-4 min-h-[500px]">
               <Image
                 src={cert.image || "/placeholder.svg"}
@@ -1064,7 +1064,7 @@ export default function RoboticPortfolio() {
   }
 
   return (
-    <div className="min-h-screen bg-white text-black overflow-x-hidden">
+      <div className="min-h-screen bg-white text-black overflow-x-hidden w-screen max-w-full">
       {/* Skip link for accessibility */}
       <a
         href="#main"
@@ -1098,7 +1098,7 @@ export default function RoboticPortfolio() {
               <button
                 onClick={() => scrollToSection("hero")}
                 aria-label="Go to home"
-                className="inline-flex items-center gap-3 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-black group"
+                className="inline-flex items-center gap-2 sm:gap-3 md:gap-4 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-black group"
               >
                 <div className="relative">
                   <div className="absolute inset-0 bg-black rounded-lg opacity-0 group-hover:opacity-20 transition-all duration-300 scale-110" />
@@ -1139,7 +1139,7 @@ export default function RoboticPortfolio() {
               </div>
 
               {/* Desktop actions */}
-              <div className="hidden md:flex items-center gap-3">
+              <div className="hidden md:flex items-center gap-2 lg:gap-4">
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
@@ -1205,7 +1205,7 @@ export default function RoboticPortfolio() {
               exit={{ opacity: 0, height: 0 }}
               className="md:hidden bg-gradient-to-b from-amber-100 to-amber-50 border-t-4 border-black shadow-[6px_6px_0_#000]"
             >
-              <div className="px-3 py-3 space-y-2">
+              <div className="px-2 sm:px-3 py-2 sm:py-3 space-y-1 sm:space-y-2">
                 {["hero", "about", "experience", "education", "projects", "skills", "certifications", "contact"].map(
                   (section) => (
                     <button
@@ -1388,7 +1388,7 @@ export default function RoboticPortfolio() {
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8 }}
                 viewport={{ once: true }}
-                className="space-y-6"
+                className="space-y-3 sm:space-y-4 md:space-y-6"
               >
                 <MangaPanel className="bg-white">
                   <p className="text-lg text-black leading-relaxed font-bold">
@@ -1405,14 +1405,14 @@ export default function RoboticPortfolio() {
                 </MangaPanel>
 
                 <div className="grid grid-cols-2 gap-3 sm:gap-4 mt-6 sm:mt-8">
-                  <motion.div whileHover={{ scale: 1.05 }} className="bg-blue-200 p-4 rounded-lg border-4 border-black">
+                  <motion.div whileHover={{ scale: 1.05 }}         className="bg-blue-200 p-3 sm:p-4 rounded-lg border-4 border-black w-full">
                     <MapPin className="w-8 h-8 text-black mb-2" />
                     <p className="text-sm text-black font-bold">LOCATION</p>
                     <p className="text-black manga-text">BANGALORE!</p>
                   </motion.div>
                   <motion.div
                     whileHover={{ scale: 1.05 }}
-                    className="bg-green-200 p-4 rounded-lg border-4 border-black"
+                    className="bg-green-200 p-3 sm:p-4 rounded-lg border-4 border-black w-full"
                   >
                     <Award className="w-8 h-8 text-black mb-2" />
                     <p className="text-sm text-black font-bold">EDUCATION</p>
@@ -1420,7 +1420,7 @@ export default function RoboticPortfolio() {
                   </motion.div>
                 </div>
 
-                <div className="flex flex-col sm:flex-row gap-4">
+                <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 md:gap-4 w-full overflow-hidden">
                   <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
                     <Button
                       onClick={handleDownloadResume}
@@ -1477,7 +1477,7 @@ export default function RoboticPortfolio() {
                     <Card className="bg-transparent border-0 shadow-none">
                       <CardHeader>
                         <div className="flex items-center space-x-4 mb-4">
-                          <div className="p-4 bg-yellow-300 rounded-full border-4 border-black">
+                          <div className="p-3 sm:p-4 bg-yellow-300 rounded-full border-4 border-black">
                             <div className="text-black">{exp.icon}</div>
                           </div>
                           <CardTitle className="text-2xl text-black manga-title">{exp.title}</CardTitle>
@@ -1498,7 +1498,7 @@ export default function RoboticPortfolio() {
                         </CardDescription>
                       </CardHeader>
                       <CardContent>
-                        <ul className="list-none text-black space-y-3">
+                        <ul className="list-none text-black space-y-2 sm:space-y-3">
                           {exp.description.map((item, i) => (
                             <li key={i} className="flex items-start">
                               <span className="mr-3 text-2xl">⚡</span>
@@ -1556,7 +1556,7 @@ export default function RoboticPortfolio() {
                 <Card className="bg-transparent border-0 shadow-none">
                   <CardHeader>
                     <div className="flex items-center space-x-4 mb-4">
-                      <div className="p-4 bg-purple-300 rounded-full border-4 border-black">
+                      <div className="p-3 sm:p-4 bg-purple-300 rounded-full border-4 border-black">
                         <GraduationCap className="w-8 h-8 text-black" />
                       </div>
                       <CardTitle className="text-2xl text-black manga-title">{educationData.degree}</CardTitle>
@@ -1578,7 +1578,7 @@ export default function RoboticPortfolio() {
                   </CardHeader>
                   <CardContent>
                     <h4 className="text-xl font-bold text-black mb-4 manga-text">POWER HIGHLIGHTS:</h4>
-                    <ul className="list-none text-black space-y-3">
+                    <ul className="list-none text-black space-y-2 sm:space-y-3">
                       {educationData.highlights.map((item, i) => (
                         <li key={i} className="flex items-start">
                           <span className="mr-3 text-2xl">🎯</span>
@@ -1659,7 +1659,7 @@ export default function RoboticPortfolio() {
                           ))}
                         </div>
 
-                        <div className="flex flex-wrap items-center gap-3">
+                        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                           <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
                             <Button
                               size="sm"
@@ -1835,7 +1835,7 @@ export default function RoboticPortfolio() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
-              className="flex flex-wrap justify-center gap-3 mb-12"
+              className="flex flex-wrap justify-center gap-2 sm:gap-3 md:gap-4 mb-8 sm:mb-10 md:mb-12"
             >
               {certificationCategories.map((category) => (
                 <motion.button
@@ -1890,7 +1890,7 @@ export default function RoboticPortfolio() {
                           <CardTitle className="text-lg text-black mb-2 manga-title leading-tight">
                             {cert.name}
                           </CardTitle>
-                          <div className="space-y-2">
+                          <div className="space-y-1 sm:space-y-2">
                             <div className="flex items-center text-black text-sm font-bold">
                               <Building className="w-4 h-4 mr-2" />
                               {cert.organization}
@@ -1952,7 +1952,7 @@ export default function RoboticPortfolio() {
                                       </Badge>
                                     </div>
                                   </div>
-                                  <div className="p-6 flex-1 flex flex-col">
+                                  <div className="p-3 sm:p-4 md:p-6 flex-1 flex flex-col">
                                     <div className="relative w-full flex-1 mb-4 min-h-[500px]">
                                       <Image
                                         src={cert.image || "/placeholder.svg"}
@@ -2031,12 +2031,12 @@ export default function RoboticPortfolio() {
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8 }}
                 viewport={{ once: true }}
-                className="space-y-8"
+                className="space-y-4 sm:space-y-6 md:space-y-8"
               >
                 <MangaPanel className="bg-white relative">
                   <MangaActionEffect effect="CONTACT INFO!" className="top-4 right-4" />
                   <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-black mb-4 sm:mb-6 manga-title">HERO DETAILS</h3>
-                  <div className="space-y-6">
+                  <div className="space-y-3 sm:space-y-4 md:space-y-6">
                     <motion.div
                       whileHover={{ x: 10, scale: 1.02 }}
                       className="flex items-center space-x-4 p-4 rounded-lg border-4 border-black bg-blue-200"
@@ -2127,7 +2127,7 @@ export default function RoboticPortfolio() {
                         I'll respond faster than a robot's reflexes!
                       </CardDescription>
                     </CardHeader>
-                    <CardContent className="space-y-6">
+                    <CardContent className="space-y-3 sm:space-y-4 md:space-y-6">
                       <div className="grid grid-cols-2 gap-4">
                         <div>
                           <label className="block text-lg font-bold text-black mb-2 manga-text">FIRST NAME</label>
