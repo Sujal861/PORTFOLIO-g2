@@ -679,18 +679,31 @@ export default function RoboticPortfolio() {
       icon: <Brain className="w-6 h-6" />,
       description:
         "Certificate of Participation for completing the Robo-AI industrial training program on robotics automation and software simulation with AI.",
-      color: "from-green-400 to-teal-600",
+  color: "from-green-400 to-teal-600",
   image: "/images/certificates/myequation-robo-ai-appreciation.png",
   link: "https://learn.myequation.in/verify/891096",
-    },
+  },
+  {
+  name: "Getting Started with MongoDB Atlas",
+  organization: "MongoDB, Inc",
+  date: "Jan 2026",
+  level: "Introductory",
+  category: "Database Management",
+  icon: <Database className="w-6 h-6" />,
+  description:
+  "Proof of completion for successfully completing the 'Getting Started with MongoDB Atlas' course. Comprehensive introduction to MongoDB Atlas cloud database platform, cluster management, and database operations.",
+  color: "from-green-600 to-emerald-600",
+  image: "/images/certificates/mongodb-atlas.png",
+  },
   ]
 
   const certificationCategories = [
-    "All",
-    "Artificial Intelligence",
-    "Robotics",
-    "AI/ML",
-    "Innovation & Leadership",
+  "All",
+  "Artificial Intelligence",
+  "Robotics",
+  "AI/ML",
+  "Innovation & Leadership",
+  "Database Management",
     "Electrical Engineering",
     "Career Development",
     "AI Development",
