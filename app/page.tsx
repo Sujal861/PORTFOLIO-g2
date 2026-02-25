@@ -2180,7 +2180,7 @@ export default function RoboticPortfolio() {
 
         {/* Resume Modal Dialog */}
         <Dialog open={resumeModalOpen} onOpenChange={setResumeModalOpen}>
-          <DialogContent className="max-w-4xl w-[95vw] h-[90vh] p-0 bg-white border-8 border-black flex flex-col">
+          <DialogContent className="max-w-4xl w-[95vw] max-h-[90vh] p-0 bg-white border-8 border-black flex flex-col">
             <div className="bg-black text-white p-4 sm:p-6 flex justify-between items-center border-b-4 border-black">
               <h2 className="text-2xl sm:text-3xl font-bold manga-text">MY RESUME</h2>
               <button
@@ -2190,12 +2190,17 @@ export default function RoboticPortfolio() {
                 ✕
               </button>
             </div>
-            <div className="flex-1 overflow-hidden">
-              <iframe
-                src={RESUME_PATH}
-                className="w-full h-full border-0"
-                title="Sujal Gupta Resume"
-              />
+            <div className="flex-1 overflow-y-auto flex items-center justify-center bg-gray-100 p-4 sm:p-6">
+              <div className="relative w-full h-auto bg-white border-4 border-black shadow-lg">
+                <Image
+                  src="/images/resume-preview.jpg"
+                  alt="Sujal Gupta Resume"
+                  width={800}
+                  height={1000}
+                  className="w-full h-auto object-contain"
+                  priority
+                />
+              </div>
             </div>
             <div className="bg-yellow-300 border-t-4 border-black p-3 sm:p-4 flex gap-2 justify-end">
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
